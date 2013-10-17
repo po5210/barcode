@@ -1,0 +1,1 @@
+json.(@favorite, :id,:domain_id,:name,:description,:url,:user_id,:user_name,:created_at,:creator_id,:updated_at,:updater_id)

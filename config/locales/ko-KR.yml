@@ -1,0 +1,15 @@
+# Sample localization file for English. Add more files in this directory for other locales.
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+ko-KR:
+  hello: "안녕"
+  cfinstall_ment: |
+    IE 브라우저에서는 <b>구글 크롬프레임을 설치해야 정상적인 동작</b>을 보장합니다.</br>
+    이 서비스를 사용하기 위해서는 아래 링크를 클릭하면 구글 크롬 프레임이 설치됩니다.</br>
+    정상적으로 설치되면, 자동으로 이 페이지가 재시작됩니다. </p>
+  cfinstall_link: 구글 크롬 프레임 설치하기
+
+  error:
+    unknown_file_type: '지원하지 않는 파일형식입니다.'
+    entity_not_found: '엔티티 객체가 존재하지 않습니다.'
+    empty_not_allowed: '빈 값은 허용하지 않습니다.'

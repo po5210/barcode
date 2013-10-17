@@ -1,0 +1,22 @@
+.x-grid-group-total  .x-grid-cell-inner,
+.x-grid-grand-total  .x-grid-cell-inner,
+.x-grid-grand-total  .x-column-header-inner,
+.x-grid-group-total  .x-column-header-inner {
+    font-weight: bold;
+    font-size: 11px;
+    padding-bottom: 8px;
+}
+.x-grid-group-total  .x-grid-cell-inner,
+.x-grid-group-total  .x-column-header-inner {
+    color: royalblue;
+    background-color: aliceblue;
+}
+.x-grid-grand-total  .x-grid-cell-inner,
+.x-grid-grand-total  .x-column-header-inner {
+    color: royalblue;
+    background-color: aliceblue;
+}
+.x-grid-cell.pivot-value{
+  	background-color: #F6CECE;
+	color: #FA5858;
+}

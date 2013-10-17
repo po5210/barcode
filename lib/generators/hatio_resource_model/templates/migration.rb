@@ -1,0 +1,1 @@
+<%= HatioMigrationUtil.create_table_migration(class_name, table_name, @attributes, options.id_type, @pkColumnName) %>

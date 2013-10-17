@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= GlobalConfig.main_title %></title>
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <%= stylesheet_link_tag    "application", :media => "all" %>
+  <%= javascript_include_tag "application" %>
+  <%= csrf_meta_tags %>
+  <%= yield(:head) %>
+</head>
+<body class="bgGray">
+	<%= render 'layouts/messages' %>
+	<%= yield %>
+	<%= render 'layouts/navigation' %>
+</body>
+</html>

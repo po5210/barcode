@@ -1,0 +1,87 @@
+<html lang='en'>
+	<head>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+		<meta http-equiv="X-UA-Compatible" content="chrome=1">
+		<title><%= GlobalConfig.main_title %></title>
+		<link rel="stylesheet" href="theme/css/ops.css"></link>
+
+		<!-- Assets Pipeline for Library Stylesheets -->
+	    <%= stylesheet_link_tag "ops", :media => "all" %>
+	    <%= csrf_meta_tags %>
+		
+		<!-- JavaScripts For ExtJS extjs-4.1.0-->
+		<script src="js/extjs-4.1.3/ext-all.js"></script>
+		
+		<!-- Extjs locale -->
+		<script src="js/extjs-4.1.3/locale/ext-lang-en.js" charset="UTF-8"></script>
+
+		<script type="text/javascript">
+		var login = <%=raw current_user.to_json %>;
+
+		login.locale = '<%= cookies[:language] || current_user.locale %>';
+		login.current_domain_id = '<%= @domain.id %>';
+		
+		LOCALE_RESOURCE = <%=raw Terminology.to_resource(@domain, cookies[:language] || current_user.locale) %>;
+				
+		// Links
+		STD_URL = 'std';
+		LOGOUT_URL = 'logout';
+		ASSET_PATH = '/assets/';
+		WEB_SOCKET_SWF_LOCATION = '<%= asset_path("web-socket/WebSocketMain.swf") %>';
+		WEB_SOCKET_DEBUG = true;
+
+		// ChromeFrame Install Guidance
+		if(window.attachEvent) {
+			window.attachEvent('onload', function() {
+				CFInstall.check({
+					mode : 'inline', //inline, overlay, none
+					node : 'cfinstall',
+					url : 'cfinstall.html'
+				});
+			});
+		}
+		</script>
+
+		<!-- Assets Pipeline for Library JavaScripts -->
+	    <%= javascript_include_tag "ops" %>
+
+		<script type="text/javascript">
+		Bundle.use('Base', [ 'Base.controller.BaseController' ]);
+		Bundle.use('Ops', [ 'Ops.controller.OpsController' ]);
+		</script>
+		
+		<script>
+		window.onload = function() {
+			var v = 0;
+			var inv = setInterval(function() {
+				var pbar = document.getElementById('_progressbar');
+				if(!pbar) {
+					clearInterval(inv);
+					return;
+				}
+				v += 10;
+				pbar.style.width = (v % 100) + '%';
+			}, 100);
+		};
+		
+		// WorkDate & Shift
+		REMOTE_IP = "<%= request.remote_ip %>";
+		WORK_DATE = '<%= (@domain.shift.current_work_date).strftime(GlobalConfig.default_date_format) %>';
+		SHIFT = '<%= @domain.shift.current_shift %>';
+		SHIFT_NAME = '<%= @domain.shift.shift_desc(@domain.shift.current_shift) %>';
+		SHIFT_START = '<%= @domain.shift.shift_start_time(@domain.shift.current_work_date, @domain.shift.current_shift).strftime(GlobalConfig.shift_time_format) %>';
+		SHIFT_END = '<%= @domain.shift.shift_end_time(@domain.shift.current_work_date, @domain.shift.current_shift).strftime(GlobalConfig.shift_time_format) %>';
+		SHIFT1_START = '<%= @domain.shift.shift1_start %>';
+		SHIFT_CHANGE_DELAY = <%= @domain.shift.shift_change_delay %>;
+		</script>
+	</head>
+	<body>
+		<div id="_loadprogress" style="margin:25% 35%;width:300px;text-align:center;font-size:14px;color:#333;position:relative\9;top:45%\9">
+			loading..
+			<div style="width:300px;height:15px;border:1px solid #ccc;margin-top:5px;padding:2px;background-color:#efefef;text-align:left">
+				<span id="_progressbar" style="width:0%;height:100%;background-color:#7491d1;display:block;"></span>
+			</div>
+		</div>
+		<div id="cfinstall"></div>
+	</body>
+</html>

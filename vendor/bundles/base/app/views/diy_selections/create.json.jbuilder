@@ -1,0 +1,1 @@
+json.(@diy_selection, :id,:domain_id,:name,:description,:script_type,:view_type,:service_logic,:creator_id,:updater_id,:created_at,:updated_at)

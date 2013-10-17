@@ -1,0 +1,139 @@
+$base-color: #37649f;
+$base-btn-color:#ebebeb;
+$color: #333 !default;
+$font-family:Helvetica,arial,verdana,sans-serif !default;
+$font-size  : 14px !default;
+$direction : 'top';
+$toolbar-background-gradient:none;
+$border-layout-ct-background:transparent;
+$toolbar-border-color:transparent;
+$panel-border-width: 0 !default;
+$panel-body-border-color:transparent;
+$panel-body-border-style:none;
+$button-small-border-radius: 4px !default;
+$button-small-font-size: ceil($font-size * 1.1) !default;
+$button-small-padding: 7px !default;
+$tabbar-base-color:#fff;
+$tab-top-border-radius: 0 !default;
+$tabbar-strip-height: 0px !default;
+$tab-border-color:#326cc4;
+$tab-color:#363636;
+$tab-color-active:#1d6bb4;
+$tab-font-weight: normal !default;
+$tab-font-weight-active: bold !default;
+$tab-font-size:12px;
+$tab-height: 26px !default;
+$tab-spacing: 0px !default;
+$tabbar-top-strip-border-width:0;
+$form-field-height: 35px !default;
+$form-field-border-color: #ccc !default;
+$form-field-focus-border-color: adjust-color($base-color, $hue: 0deg, $saturation: 1.065%, $lightness: 30%) !default;
+$form-field-font-size: ceil($font-size * 1.2) !default;
+$form-label-font-size: ($font-size * 1.1) !default;
+$grid-header-padding: 7px 10px !default;
+$grid-cell-inner-padding-top: 7px !default;
+$grid-cell-inner-padding-horizontal: 6px !default;
+$grid-cell-inner-padding-bottom: 6px !default;
+$grid-cell-with-col-lines-border-color: #d8d8d8 !default;
+
+$grid-row-cell-selected-border-style: solid !default;
+$grid-row-cell-selected-border-color: adjust-color($base-color, $hue: 6.952deg, $saturation: 5.848%, $lightness: 30%) !default;
+$grid-row-cell-selected-background-color: adjust-color($base-color, $hue: 3.188deg, $saturation: 0.542%, $lightness: 50%) !default;
+
+@import 'ext4/default/all';
+
+$relative-image-path-for-uis: true; // defaults to "../images/" when true
+
+#content{@include box-shadow(rgba(#000, 0.2) 2px 2px 5px);}
+$relative-image-path-for-uis: true; // defaults to "../images/" when true
+
+#titlebar{background:#fff !important;}
+#titlebar .x-btn{background:url("../imageOPS/iconTitleBar.png") 50% 0 no-repeat;width:35px;height:30px;margin-right:-1px !important;opacity:.7;border:none;border-left:1px solid #f0f0f0}
+#titlebar #show_menubar{background-position:50% -50px}
+#titlebar .btnCollapseSidebar{background-position:50% -100px}
+#titlebar .btnClose{background-position:50% -150px}
+#titlebar .btnCollapseSearch{background-position:50% -200px}
+#titlebar .x-btn-over{opacity:1}
+#titlebar .x-btn .x-btn-inner{display:none}
+.x-toolbar{padding:0}
+
+.x-btn{@include background-image(linear-gradient(
+ 		   adjust-color($base-btn-color, $hue: 0deg, $saturation: 0%, $lightness: 15%) 5%,
+ 		   adjust-color($base-btn-color, $hue: 0deg, $saturation: 0%, $lightness: 5%) 6%,
+ 		   adjust-color($base-btn-color, $hue: 0deg, $saturation: 0%, $lightness: -10%) 95%,
+ 		   adjust-color($base-btn-color, $hue: 0deg, $saturation: 0%, $lightness: 5%) 100%,
+ 		   $base-btn-color
+		));
+		border-color:#bfbfbf
+	}
+.x-btn-over{@include background-image(linear-gradient(
+ 		   adjust-color($base-color, $hue: 0deg, $saturation: 0%, $lightness: 20%) 5%,
+ 		   adjust-color($base-color, $hue: 0deg, $saturation: 0%, $lightness: 10%) 6%,
+ 		   adjust-color($base-color, $hue: 0deg, $saturation: 0%, $lightness: -5%) 95%,
+ 		   adjust-color($base-color, $hue: 0deg, $saturation: 0%, $lightness: 5%) 100%,
+ 		   $base-color
+		));
+		border-color:#0e3d79;
+	}
+.x-btn-pressed{@include background-image(linear-gradient(
+ 		   adjust-color($base-color, $hue: 0deg, $saturation: 0%, $lightness: -20%) 5%,
+ 		   adjust-color($base-color, $hue: 0deg, $saturation: 0%, $lightness: -10%) 6%,
+ 		   adjust-color($base-color, $hue: 0deg, $saturation: 0%, $lightness: 10%) 95%,
+ 		   adjust-color($base-color, $hue: 0deg, $saturation: 0%, $lightness: -5%) 100%,
+ 		   $base-color
+		));
+		border-color:#082f61;
+	}
+.x-progress{@include background-image(linear-gradient(
+	 	    adjust-color(#c4c4c4, $hue: 0deg, $saturation: 0%, $lightness: -20%) 5%,
+	 	    adjust-color(#c4c4c4, $hue: 0deg, $saturation: 0%, $lightness: 10%) 100%
+		 ));
+	}
+.btnDelete.x-btn{@include background-image(linear-gradient(
+	   adjust-color(#e57f7f, $hue: 0deg, $saturation: 0%, $lightness: 40%) 5%,
+	   adjust-color(#e57f7f, $hue: 0deg, $saturation: 0%, $lightness: 25%) 6%,
+	   adjust-color(#e57f7f, $hue: 0deg, $saturation: 0%, $lightness: 10%) 95%,
+	   adjust-color(#e57f7f, $hue: 0deg, $saturation: 0%, $lightness: 20%) 100%,
+	   $base-color
+	));
+	border-color:#e39c9c;
+}
+.btnDelete.x-btn-over{@include background-image(linear-gradient(
+	   adjust-color(#a0372b, $hue: 0deg, $saturation: 0%, $lightness: 20%) 5%,
+	   adjust-color(#a0372b, $hue: 0deg, $saturation: 0%, $lightness: 10%) 6%,
+	   adjust-color(#a0372b, $hue: 0deg, $saturation: 0%, $lightness: -5%) 95%,
+	   adjust-color(#a0372b, $hue: 0deg, $saturation: 0%, $lightness: 5%) 100%,
+	   $base-color
+	));
+	border-color:#83170b;
+}
+.userMenu.x-btn{@include background-image(linear-gradient(
+ 		   adjust-color($base-btn-color, $hue: 0deg, $saturation: 0%, $lightness: 50%) 5%,
+ 		   adjust-color($base-btn-color, $hue: 0deg, $saturation: 0%, $lightness: 30%) 6%,
+ 		   adjust-color($base-btn-color, $hue: 0deg, $saturation: 0%, $lightness: -5%) 100%,
+ 		   $base-btn-color
+		));
+		border-color:#cfcfcf
+	}
+.userMenu.x-btn-over{@include background-image(linear-gradient(
+ 		   adjust-color($base-btn-color, $hue: 0deg, $saturation: 0%, $lightness: 60%) 5%,
+ 		   adjust-color($base-btn-color, $hue: 0deg, $saturation: 0%, $lightness: 40%) 6%,
+ 		   adjust-color($base-btn-color, $hue: 0deg, $saturation: 0%, $lightness: 3%) 100%,
+ 		   $base-btn-color
+		));
+		border-color:#bfbfbf
+	}	
+.userMenu.x-btn-pressed{@include background-image(linear-gradient(
+ 		   adjust-color($base-btn-color, $hue: 0deg, $saturation: 0%, $lightness: 0%) 5%,
+ 		   adjust-color($base-btn-color, $hue: 0deg, $saturation: 0%, $lightness: -5%) 6%,
+ 		   adjust-color($base-btn-color, $hue: 0deg, $saturation: 0%, $lightness: 3%) 100%,
+ 		   $base-btn-color
+		));
+		border-color:#999
+	}
+
+.x-form-text, textarea.x-form-field,.x-progress,.x-progress-bar,.infoFields2Column .x-panel-body-default,.infoFields3Column .x-panel-body-default{@include border-radius(4px);}
+.x-grid-header-ct,#optionbar{@include border-top-left-radius(4px);@include border-top-right-radius(4px);border:1px solid #d8d8d8}	.btnCollapseSearch,.btnClose,#optionbar .x-hbox-form-item input,#titlebar .x-btn,#navbar .x-btn{@include border-radius(0);}
+.codePicker{@include border-radius(6px);}
+#titletoolbar .userMenu{@include border-radius(6px);border:1px solid #c8c8c8}
+.menuModal{@include border-radius(8px);}

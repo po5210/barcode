@@ -1,0 +1,51 @@
+Description:
+    Generate api
+
+Example:
+    rails generate hatio_create_bundle Comp --bundle_name=comp --dependency=prod
+
+	Generate comp server bundle....
+	      create  vendor/bundles/comp
+	      create  vendor/bundles/comp/app
+	      create  vendor/bundles/comp/app/controllers
+	      create  vendor/bundles/comp/app/models
+	      create  vendor/bundles/comp/app/helpers
+	      create  vendor/bundles/comp/app/views
+	      create  vendor/bundles/comp/config
+	      create  vendor/bundles/comp/config/locales
+	      create  vendor/bundles/comp/db
+	      create  vendor/bundles/comp/db/migrate
+	      create  vendor/bundles/comp/lib
+	      create  vendor/bundles/comp/lib/seed
+	      create  vendor/bundles/comp/lib/comp
+	      create  vendor/bundles/comp/test
+	      create  vendor/bundles/comp/lib/init.rb
+	      create  vendor/bundles/comp/lib/comp.rb
+	      create  vendor/bundles/comp/lib/comp/version.rb
+	      create  vendor/bundles/comp/lib/comp/pluggable_spot.rb
+	      create  vendor/bundles/comp/config/routes.rb
+	      create  vendor/bundles/comp/config/locales/en-US.yml
+	      create  vendor/bundles/comp/config/locales/ko-KR.yml
+	      create  vendor/bundles/comp/config/locales/zh-CN.yml
+	      create  vendor/bundles/comp/lib/seed/seed.rb
+	      create  vendor/bundles/comp/lib/tasks/comp.rake
+	      create  vendor/bundles/comp/Gemfile
+	      create  vendor/bundles/comp/Rakefile
+	      create  vendor/bundles/comp/comp.gemspec
+	      create  vendor/bundles/comp/LICENSE.txt
+	      create  vendor/bundles/comp/README.md
+	      create  vendor/bundles/comp/test/test_helper.rb
+	      create  vendor/bundles/comp/test/comp_test.rb
+
+	Generate comp client bundle....
+	      create  public/bundle/comp
+	      create  public/bundle/comp/controller
+	      create  public/bundle/comp/model
+	      create  public/bundle/comp/store
+	      create  public/bundle/comp/view
+	      create  public/bundle/comp/mixin
+	      create  public/bundle/comp/locale
+	      create  public/bundle/comp/locale/en-US.js
+	      create  public/bundle/comp/locale/ko-KR.js
+	      create  public/bundle/comp/locale/zh-CN.js
+	      create  public/bundle/comp/controller/CompController.js

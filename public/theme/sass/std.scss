@@ -1,0 +1,152 @@
+// Insert your custom variables here.
+$base-color: #2068b1;
+$bg-color: #2562b4;
+$base-btn-color:#ebebeb;
+$color: #333 !default;
+$font-family:Helvetica,arial,verdana,sans-serif !default;
+$direction : 'top';
+$toolbar-background-gradient:none;
+$border-layout-ct-background:transparent;
+$toolbar-border-color:transparent;
+$panel-border-width: 0 !default;
+$panel-body-border-color:transparent;
+$panel-body-border-style:none;
+$button-small-border-radius: 4px !default;
+$tabbar-base-color:#fff;
+$tab-top-border-radius: 0 !default;
+$tabbar-strip-height: 0px !default;
+$tab-border-color:#207cda;
+$tab-color:#363636;
+$tab-color-active:#1262c4;
+$tab-font-weight: normal !default;
+$tab-font-weight-active: bold !default;
+$tab-font-size:12px;
+$tab-height: 26px !default;
+$tab-spacing: 0px !default;
+$tabbar-top-strip-border-width:0;
+$form-field-height: 26px !default;
+$form-field-border-color: #ccc !default;
+$form-field-focus-border-color: adjust-color($base-color, $hue: 0deg, $saturation: 1.065%, $lightness: 30%) !default;
+$grid-header-padding: 7px 10px !default;
+$grid-cell-inner-padding-top: 7px !default;
+$grid-cell-inner-padding-horizontal: 6px !default;
+$grid-cell-inner-padding-bottom: 6px !default;
+$grid-cell-with-col-lines-border-color: #d8d8d8 !default;
+
+$grid-row-cell-selected-border-style: solid !default;
+$grid-row-cell-selected-border-color: adjust-color($base-color, $hue: 6.952deg, $saturation: 5.848%, $lightness: 30%) !default;
+$grid-row-cell-selected-background-color: adjust-color($base-color, $hue: 3.188deg, $saturation: 0.542%, $lightness: 50%) !default;
+
+$window-background-color:#fff;
+
+$boundlist-item-padding: 3px !default;
+$boundlist-item-over-background-color: #2b75e5 !default;
+$boundlist-item-selected-background-color: darken($boundlist-item-over-background-color, 5) !default;
+
+$datepicker-base-color:#558bce;
+$datepicker-border-color:#558bce;
+
+
+
+@import 'ext4/default/all';
+
+$relative-image-path-for-uis: true; // defaults to "../images/" when true
+
+.x-btn{@include background-image(linear-gradient(
+ 		   adjust-color($base-btn-color, $hue: 0deg, $saturation: 0%, $lightness: 15%) 5%,
+ 		   adjust-color($base-btn-color, $hue: 0deg, $saturation: 0%, $lightness: 5%) 6%,
+ 		   adjust-color($base-btn-color, $hue: 0deg, $saturation: 0%, $lightness: -10%) 95%,
+ 		   adjust-color($base-btn-color, $hue: 0deg, $saturation: 0%, $lightness: 5%) 100%,
+ 		   $base-btn-color
+		));
+		border-color:#bfbfbf
+	}
+.x-btn-over{@include background-image(linear-gradient(
+ 		   adjust-color($base-color, $hue: 0deg, $saturation: 0%, $lightness: 20%) 5%,
+ 		   adjust-color($base-color, $hue: 0deg, $saturation: 0%, $lightness: 10%) 6%,
+ 		   adjust-color($base-color, $hue: 0deg, $saturation: 0%, $lightness: -5%) 95%,
+ 		   adjust-color($base-color, $hue: 0deg, $saturation: 0%, $lightness: 5%) 100%,
+ 		   $base-color
+		));
+		border-color:#1e5d99;
+	}
+.x-btn-pressed{@include background-image(linear-gradient(
+ 		   adjust-color($base-color, $hue: 0deg, $saturation: 0%, $lightness: -20%) 5%,
+ 		   adjust-color($base-color, $hue: 0deg, $saturation: 0%, $lightness: -10%) 6%,
+ 		   adjust-color($base-color, $hue: 0deg, $saturation: 0%, $lightness: 10%) 95%,
+ 		   adjust-color($base-color, $hue: 0deg, $saturation: 0%, $lightness: -5%) 100%,
+ 		   $base-color
+		));
+		border-color:#093c6c;
+	}
+.sidebar .x-btn-over{@include background-image(linear-gradient(
+	 	    adjust-color($color, $hue: 0deg, $saturation: 0%, $lightness: 40%) 5%,
+	 	    adjust-color($color, $hue: 0deg, $saturation: 0%, $lightness: 30%) 6%,
+	 	    adjust-color($color, $hue: 0deg, $saturation: 0%, $lightness: 10%) 95%,
+	 	    adjust-color($color, $hue: 0deg, $saturation: 0%, $lightness: 30%) 100%,
+	 	    $color
+		 ));
+		 border-color:#666
+	} 
+.sidebar .x-btn-pressed{@include background-image(linear-gradient(
+	 	    adjust-color($color, $hue: 0deg, $saturation: 0%, $lightness: -15%) 5%,
+	 	    adjust-color($color, $hue: 0deg, $saturation: 0%, $lightness: -5%) 6%,
+	 	    adjust-color($color, $hue: 0deg, $saturation: 0%, $lightness: 10%) 95%,
+	 	    adjust-color($color, $hue: 0deg, $saturation: 0%, $lightness: -5%) 100%,
+	 	    $color
+		 ));
+		 border-color:#333
+	}	
+.userMenu .x-btn{@include background-image(linear-gradient(
+ 		   adjust-color($bg-color, $hue: 0deg, $saturation: 0%, $lightness: 40%) 5%,
+ 		   adjust-color($bg-color, $hue: 0deg, $saturation: 0%, $lightness: 30%) 6%,
+ 		   adjust-color($bg-color, $hue: 0deg, $saturation: 0%, $lightness: -5%) 100%,
+ 		   $base-btn-color
+		));
+		border-color:#1e5d99
+	}
+.userMenu .x-btn-over{@include background-image(linear-gradient(
+ 		   adjust-color($base-color, $hue: 0deg, $saturation: 0%, $lightness: 50%) 5%,
+ 		   adjust-color($base-color, $hue: 0deg, $saturation: 0%, $lightness: 40%) 6%,
+ 		   adjust-color($base-color, $hue: 0deg, $saturation: 0%, $lightness: 3%) 100%,
+ 		   $base-color
+		));
+		border-color:#1e5d99
+	}	
+.userMenu .x-btn-pressed{@include background-image(linear-gradient(
+ 		   adjust-color($bg-color, $hue: 0deg, $saturation: 0%, $lightness: 0%) 5%,
+ 		   adjust-color($bg-color, $hue: 0deg, $saturation: 0%, $lightness: -5%) 6%,
+ 		   adjust-color($bg-color, $hue: 0deg, $saturation: 0%, $lightness: 3%) 100%,
+ 		   $base-btn-color
+		));
+		border-color:#1e5d99
+	}
+.x-progress{@include background-image(linear-gradient(
+	 	    adjust-color(#c4c4c4, $hue: 0deg, $saturation: 0%, $lightness: -20%) 5%,
+	 	    adjust-color(#c4c4c4, $hue: 0deg, $saturation: 0%, $lightness: 10%) 100%
+		 ));
+	}
+.btnDelete.x-btn{@include background-image(linear-gradient(
+	   adjust-color(#e57f7f, $hue: 0deg, $saturation: 0%, $lightness: 40%) 5%,
+	   adjust-color(#e57f7f, $hue: 0deg, $saturation: 0%, $lightness: 25%) 6%,
+	   adjust-color(#e57f7f, $hue: 0deg, $saturation: 0%, $lightness: 10%) 95%,
+	   adjust-color(#e57f7f, $hue: 0deg, $saturation: 0%, $lightness: 20%) 100%,
+	   $base-color
+	));
+	border-color:#e39c9c;
+}
+.btnDelete.x-btn-over{@include background-image(linear-gradient(
+	   adjust-color(#a0372b, $hue: 0deg, $saturation: 0%, $lightness: 20%) 5%,
+	   adjust-color(#a0372b, $hue: 0deg, $saturation: 0%, $lightness: 10%) 6%,
+	   adjust-color(#a0372b, $hue: 0deg, $saturation: 0%, $lightness: -5%) 95%,
+	   adjust-color(#a0372b, $hue: 0deg, $saturation: 0%, $lightness: 5%) 100%,
+	   $base-color
+	));
+	border-color:#83170b;
+}
+.x-menu-item-active .x-menu-item-link{border-color:#ccc;background:#fff}
+.x-form-text, textarea.x-form-field,.x-progress,.x-progress-bar,.listSearch  .x-panel-body-default{@include border-radius(4px);}
+.x-grid-header-ct{@include border-top-left-radius(4px);@include border-top-right-radius(4px);border:1px solid #d8d8d8}
+.btnCollapseSearch,.btnClose,.btnCollapseSidebar{@include border-radius(0);}
+.codePicker,.listSearch,.x-datepicker,.userMenu .x-btn-default-toolbar-small{@include border-radius(6px);}
+.x-datepicker-header{@include border-top-radius(6px);}

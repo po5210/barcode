@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+  xmlns:x="urn:schemas-microsoft-com:office:excel"
+  xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:html="http://www.w3.org/TR/REC-html40">
+  <Worksheet ss:Name="Sheet1">
+    <Table>
+      <Row>
+	<% @out_params.each do |out_param|
+		next if(out_param.rank <= 0)
+		name = (out_param.description && !out_param.description.blank?) ? out_param.description : out_param.name
+	%>
+        <Cell><Data ss:Type="String"><%= name %></Data></Cell>
+	<% end %>
+      </Row>
+    <% @result_list.each do |result| %>
+      <Row>
+		<% @out_params.each do |out_param|
+			next if(out_param.rank <= 0)
+			value = result[out_param.name]
+		%>
+        <Cell><Data ss:Type="String"><%= value ? value : result[out_param.name.to_sym] %></Data></Cell>
+		<% end %>
+      </Row>
+    <% end %>
+    </Table>
+  </Worksheet>
+</Workbook>

@@ -1,0 +1,9 @@
+Description:
+    generate model and database migration file
+
+Example:
+    rails generate hatio_resource_model Product id:string domain_id:string name:string --bundle=comp --id_type=uuid --history=n
+
+    This will create:
+        public/app/model/Product.js
+		db/migrate/20120914100608_create_products.rb

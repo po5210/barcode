@@ -1,0 +1,15 @@
+Description:
+    Generate api
+
+Example:
+    rails generate hatio_resource_api Product id:string domain_id:string name:string --bundle=comp --id_type=uuid
+
+    This will create:
+    	app/controllers/products_controller.rb
+		app/models/products.rb
+		db/migrate/20121010120000_create_products.rb
+		app/views/products/index.json.jbuilder
+		app/views/products/show.json.jbuilder
+		app/views/products/create.json.jbuilder
+		app/views/products/update.json.jbuilder
+		app/views/products/destroy.json.jbuilder

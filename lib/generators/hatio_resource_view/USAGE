@@ -1,0 +1,11 @@
+Description:
+	Generate view (javascript files : controller, model, store, view)
+
+Example:
+    rails generate hatio_resource_view Product --bundle=Framework --domain_id=System --view_type=list-detail --detail_view_type=popup --parent_menu=System
+
+    This will create:
+        public/Framework/controller/Product.js
+		public/Framework/model/Product.js
+		public/Framework/store/Product.js
+		public/Framework/view/entity/Product.js

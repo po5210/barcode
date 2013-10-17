@@ -1,0 +1,40 @@
+== Getting Started
+
+1. bundle install
+		<tt>bundle install</tt>
+
+2. create DB table
+		<tt>rake db:migrate</tt>
+
+3. generate bootstrap install
+		<tt>rails g bootstrap:install -f</tt>
+
+4. run server (default port 3000)
+		<tt>rails s</tt>
+
+5. run server with other port
+		<tt>rails s -p 5000</tt>
+	
+6. site URL
+		<tt>http://localhost:3000</tt>
+
+7. login ==> 변경됨(인증 키 email ==> login 필드로)
+		<tt>user : admin</tt>
+		<tt>password : admin</tt>
+
+8. 최초 셋업(DB config파일 생성, DB 초기화, 테이블 생성, 초기 데이터 로딩 ) rake
+		<tt>rake hatio:setup</tt>
+		
+9. 환경 초기화(DB 초기화, 테이블 생성, 초기 데이터 로딩) rake
+		<tt>rake hatio:reset</tt>
+		<tt>rake hatio:reset RAILS_ENV=production</tt>
+	
+10. Production Mode로 패키징하기 전에 아래 커맨드로 Asset들을 Precompile 해야 한다. (public/assets 폴더에 asset생성)
+		<tt>bundle exec rake assets:precompile</tt>
+		
+11. Torquebox run command : Hatio 디렉토리로 이동한 후 
+		<tt>echo Y | jruby -S torquebox run -b 0.0.0.0</tt>
+		
+12. Locale 파일들을 읽어서 Terminology 테이블에 업로드 한다.
+		<tt>rake hatio:upload_locale</tt>
+		<tt>rake hatio:upload_locale RAILS_ENV=production</tt>

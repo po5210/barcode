@@ -1,0 +1,16 @@
+# Sample localization file for English. Add more files in this directory for other locales.
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+en-US:
+  hello: "Hello world"
+  cfinstall_ment: |
+    Google Chrome Frame is a free plug-in for Internet Explorer. Some advanced web apps use Google Chrome Frame to provide you with additional features and better performance.
+    So, we recommend to <b>install Google Chrome Frame</b> in this IE browsers.</br>
+    To install Google Chrome Frame, click below link.</br>
+    If Google Chrome Frame is installed well, this page will be refreshed automatically. </p>
+  cfinstall_link: Install Google Chrome Frame
+  
+  error:
+    unknown_file_type: 'Unknown File Type'
+    entity_not_found: 'Entity not found'
+    empty_not_allowed: 'Empty Data not allowed'

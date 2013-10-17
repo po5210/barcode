@@ -1,0 +1,1 @@
+json.(@common_code, :id,:domain_id,:name,:parent_id,:description,:creator_id,:updater_id,:created_at,:updated_at)
