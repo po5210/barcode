@@ -47,8 +47,8 @@ module Hatio
         resource_class.transaction do
           unless(import_data_list.empty?)
             import_data_list.each do |import_data|
-              rsc = resource_class.find_by_domain_id_and_name(domain.id, import_data['name'])
-              
+              #rsc = resource_class.find_by_domain_id_and_name(domain.id, import_data['name'])
+              rsc = nil
               if(rsc)
                 # 있으면 스킵 
                 debug_print "#{import_data['name']} skipped!"

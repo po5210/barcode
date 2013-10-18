@@ -8,16 +8,21 @@ Ext.define('Bar.controller.trade.Trade', {
 	requires : [ 
 		'Bar.model.Trade', 
 		'Bar.store.Trade', 
-		'Bar.view.trade.Trade' 
+		'Bar.view.trade.Trade',
+		'Bar.store.Baseloc',
+		'Bar.view.trade.TradePopup' 
 	],
 	
 	models : ['Bar.model.Trade'],
 			
-	stores: ['Bar.store.Trade'],
+	stores: ['Bar.store.Trade', 'Bar.store.Baseloc'],
 	
-	views : ['Bar.view.trade.Trade'],
+	views : ['Bar.view.trade.Trade', 'Bar.view.trade.TradePopup'],
 	
-	refs: [ { ref : 'Trade', selector : 'bar_trade' } ],
+	refs: [ 
+		{ ref : 'Trade', selector : 'bar_trade' },
+		{ ref : 'TradePopup', selector : 'bar_trade_popup' }
+	],
 	
 	init: function() {
 		this.callParent(arguments);
@@ -34,7 +39,8 @@ Ext.define('Bar.controller.trade.Trade', {
 				click_import : this.onImport,
 				click_export : this.onExport,
 				after_grid_updated : this.afterGridUpdated,
-				click_update : this.onInquiryDetail
+				click_update : this.onInquiryDetail,
+				click_loc_list : this.onLocList
 			},
 			'bar_trade_search' : {
 				click_search : this.onSearchClick,
@@ -42,6 +48,9 @@ Ext.define('Bar.controller.trade.Trade', {
 			},
 			'bar_trade_list #go_detail' : {
 				click : this.onShowDetail
+			},
+			'bar_trade_popup' : {
+				paramschange : this.onPopupParamsChange
 			}
 		});
 	},
@@ -55,6 +64,33 @@ Ext.define('Bar.controller.trade.Trade', {
 	onImportSuccess : function(response) {
 		var gridView = this.getGridView();
 		gridView.store.load();
+	},
+	
+	onLocList : function() {
+		HF.popup('Bar.view.trade.TradePopup', {}, {});
+	},
+	
+	onPopupParamsChange : function(popup, params) {
+			Ext.Ajax.request({
+				url: '/domains/' + login.current_domain_id + '/baselocs.json',
+				method : 'GET',
+				success: function(response, opts) {
+					alert(response.responseText);
+					var baseloc = Ext.JSON.decode(response.responseText);
+					var records = [];
+					Ext.Array.each(baseloc.items, function(item) {
+						var rec = {id : item.id, code : item.baseloc_cd, name : item.baseloc_nm };
+						records.push(rec); 
+					});
+					popup.child('grid').store.loadRawData(records);
+					//console.log(productList);
+					// use - store
+					//popup.child('grid').store.load();
+				},
+				failure: function(response) {
+					Ext.Msg.alert('Failure', 'Failure');
+				}
+			});
 	},
 			
 	/****************************************************************
