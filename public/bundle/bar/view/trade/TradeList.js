@@ -34,6 +34,6 @@ Ext.define('Bar.view.trade.TradeList', {
 	
 	dockedItems: [ {
 		xtype: 'controlbar',
-		items : ['->', 'add', 'update', 'delete']
+		items : ['->', 'import', 'export', 'add', 'update', 'delete']
 	} ]
 });
