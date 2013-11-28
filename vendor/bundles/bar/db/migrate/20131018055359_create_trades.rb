@@ -3,8 +3,8 @@ class CreateTrades < ActiveRecord::Migration
 	def self.up
 		create_table :trades, :id => :meaningful do |t|
 			t.references :domain
-			t.string :tr_cd, :null => false, :limit => 5
-			t.string :tr_nm, :limit => 60
+			t.string :name, :null => false, :limit => 5
+			t.string :description, :limit => 60
 			t.string :attr_nm, :limit => 60
 			t.string :tr_fg, :limit => 1
 			t.string :reg_nb, :limit => 30
@@ -26,7 +26,7 @@ class CreateTrades < ActiveRecord::Migration
 			t.timestamps
 		end
 
-		add_index :trades, [:domain_id, :tr_cd], :name => :ix_trades_0, :unique => true
+		add_index :trades, [:domain_id, :name, :tr_fg], :name => :ix_trades_0, :unique => true
 	end
 
 	def self.down

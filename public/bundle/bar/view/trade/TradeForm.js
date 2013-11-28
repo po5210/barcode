@@ -11,24 +11,48 @@ Ext.define('Bar.view.trade.TradeForm', {
 	items : [
 		{ name : 'id', fieldLabel : T('label.id'), hidden : true },
 		{ name : 'domain_id', value : login.current_domain_id, hidden : true },
-		{ name : 'tr_cd', fieldLabel : T('label.tr_cd'), allowBlank : false, maxLength : 5 },
-		{ name : 'tr_nm', fieldLabel : T('label.tr_nm'), allowBlank : false, maxLength : 60 },
-		{ name : 'attr_nm', fieldLabel : T('label.attr_nm') },
-		{ name : 'tr_fg', fieldLabel : T('label.tr_fg') },
-		{ name : 'reg_nb', fieldLabel : T('label.reg_nb') },
-		{ name : 'ppl_nb', fieldLabel : T('label.ppl_nb') },
-		{ name : 'ceo_nm', fieldLabel : T('label.ceo_nm') },
-		{ name : 'business', fieldLabel : T('label.business') },
-		{ name : 'jongmok', fieldLabel : T('label.jongmok') },
-		{ name : 'zip', fieldLabel : T('label.zip') },
-		{ name : 'div_addr1', fieldLabel : T('label.div_addr1') },
-		{ name : 'addr2', fieldLabel : T('label.addr2') },
-		{ name : 'ddd', fieldLabel : T('label.ddd') },
-		{ name : 'tel', fieldLabel : T('label.tel') },
-		{ name : 'fax', fieldLabel : T('label.fax') },
-		{ name : 'tr_nmk', fieldLabel : T('label.tr_nmk') },
-		{ name : 'attr_nmk', fieldLabel : T('label.attr_nmk') },
-		{ name : 'ceo_nmk', fieldLabel : T('label.ceo_nmk') },
+		{ 
+			xtype: 'container',
+			layout: 'hbox',
+			items : [ {
+				xtype: 'container',
+				flex : 1,
+				layout : 'anchor',
+				defaults: {
+					anchor : '90%'
+				},
+			    items: [
+					{ name : 'name', xtype : 'textfield', fieldLabel : T('label.code'), allowBlank : false, maxLength : 5 },
+					{ name : 'attr_nm', xtype : 'textfield', fieldLabel : T('label.attr_nm'), maxLength : 60 },
+					{ name : 'tr_fg', xtype : 'textfield', fieldLabel : T('label.tr_fg'), allowBlank : false },
+					{ name : 'reg_nb', xtype : 'textfield', fieldLabel : T('label.reg_nb'), maxLength : 30 },
+					{ name : 'ppl_nb', xtype : 'textfield', fieldLabel : T('label.ppl_nb'), maxLength : 20 },
+					{ name : 'ceo_nm', xtype : 'textfield', fieldLabel : T('label.ceo_nm'), maxLength : 30 },
+					{ name : 'business', xtype : 'textfield', fieldLabel : T('label.business'), maxLength : 45 },
+					{ name : 'jongmok', xtype : 'textfield', fieldLabel : T('label.jongmok'), maxLength : 45 },
+					{ name : 'zip', xtype : 'textfield', fieldLabel : T('label.zip'), maxLength : 7 }
+				]
+			}, {
+				xtype: 'container',
+				flex : 1,
+				layout : 'anchor',
+				defaults: {
+					anchor : '100%'
+				},
+				items: [
+					{ name : 'description', xtype : 'textfield', fieldLabel : T('label.name'), maxLength : 60 },
+					{ name : 'div_addr1', xtype : 'textfield', fieldLabel : T('label.div_addr1'), maxLength : 90 },
+					{ name : 'addr2', xtype : 'textfield', fieldLabel : T('label.addr2'), maxLength : 30 },
+					{ name : 'ddd', xtype : 'textfield', fieldLabel : T('label.ddd'), maxLength : 4 },
+					{ name : 'tel', xtype : 'textfield', fieldLabel : T('label.tel'), maxLength : 12 },
+					{ name : 'fax', xtype : 'textfield', fieldLabel : T('label.fax'), maxLength : 12 },
+					{ name : 'tr_nmk', xtype : 'textfield', fieldLabel : T('label.tr_nmk'), maxLength : 60 },
+					{ name : 'attr_nmk', xtype : 'textfield', fieldLabel : T('label.attr_nmk'), maxLength : 60 },
+					{ name : 'ceo_nmk', xtype : 'textfield', fieldLabel : T('label.ceo_nmk'), maxLength : 30 },					
+				]
+			} ]
+		}, 
+
 		{ fieldLabel : T('label.use_yn'), name : 'use_yn', xtype : 'codecombo', commonCode : 'USE_YN', displayField : 'description' },
 		{ xtype : 'datefield', name : 'created_at', disabled : true, fieldLabel : T('label.created_at'), format : T('format.datetime') },
 		{ xtype : 'datefield', name : 'updated_at', disabled : true, fieldLabel : T('label.updated_at'), format : T('format.datetime') },

@@ -152,13 +152,13 @@ class HatioResourceViewUtil
       output = "{ header : T('label.#{col.name}'), dataIndex : '#{col.name}', xtype : 'checkcolumn' }"
     elsif(column_type == 'date')
       if(col.editable)
-        output = "{ header : T('label.#{col.name}'), dataIndex : '#{col.name}', xtype : 'datecolumn', editor : { xtype : 'datefield', submitFormat : T('format.submitDate') } }"
+        output = "{ header : T('label.#{col.name}'), dataIndex : '#{col.name}', xtype : 'datecolumn', editor : { xtype : 'datefield' } }"
       else
         output = "{ header : T('label.#{col.name}'), dataIndex : '#{col.name}', xtype : 'datecolumn', format : T('format.date') }"
       end
     elsif(column_type == 'datetime' || column_type == 'timestamp')
       if(col.editable)
-        output = "{ header : T('label.#{col.name}'), dataIndex : '#{col.name}', xtype : 'datecolumn', format : T('format.datetime'), editor : { xtype : 'datetimefield', format : T('format.date'), submitFormat : T('format.submitDatetime') } }"
+        output = "{ header : T('label.#{col.name}'), dataIndex : '#{col.name}', xtype : 'datecolumn', format : T('format.datetime'), editor : { xtype : 'datetimefield', format : T('format.date') } }"
       else
         output = "{ header : T('label.#{col.name}'), dataIndex : '#{col.name}', xtype : 'datecolumn', format : T('format.datetime') }"
       end
@@ -231,9 +231,9 @@ class HatioResourceViewUtil
     elsif(column_type == 'boolean')
       "{ name : '#{col.name}', fieldLabel : T('label.#{col.name}'), xtype : 'checkboxfield', inputValue : true }"
     elsif(column_type == 'date')
-      "{ xtype : 'datefield', name : '#{col.name}', fieldLabel : T('label.#{col.name}'), format : T('format.date'), submitFormat : T('format.submitDate') }"
+      "{ xtype : 'datefield', name : '#{col.name}', fieldLabel : T('label.#{col.name}'), format : T('format.date') }"
     elsif(column_type == 'datetime' || column_type == 'timestamp')
-      "{ xtype : 'datetimefield', name : '#{col.name}', fieldLabel : T('label.#{col.name}'), format : T('format.date'), submitFormat : T('format.submitDatetime') }"
+      "{ xtype : 'datetimefield', name : '#{col.name}', fieldLabel : T('label.#{col.name}'), format : T('format.date') }"
     elsif(checkNumberColumn(column_type))
       "{ name : '#{col.name}', fieldLabel : T('label.#{col.name}'), xtype : 'numberfield' }"
     else

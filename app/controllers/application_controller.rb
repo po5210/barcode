@@ -8,18 +8,27 @@ class ApplicationController < ActionController::Base
   rescue_from Exception, :with => :response_by_error
   
   private
+  
   def response_by_error e
-    logger.error e.message
-    logger.error e.backtrace.join("\n")
+    err_msg, err_cls, traces, trace_str = e.message, e.class.name, e.backtrace, ""
+    logger.error err_msg
+    
+    # hatio exception이면 처리된 예외이므로 TOP 6line만 print
+    if(err_cls.start_with?("Hatio::Exception"))
+      trace_str = traces[0 .. 5].join("\n")
+    else
+      trace_str = traces.join("\n")
+    end
+    logger.error trace_str
     
     respond_with(e) do |format|
       format.json { 
         render :json => {
-          :errors => [e.message],
+          :errors => [err_msg],
           :throwable => {
-            :type => e.class.name,
-            :message => e.message,
-            :stacktrace => e.backtrace.join("\n")
+            :type => err_cls,
+            :message => err_msg,
+            :stacktrace => trace_str
           },
           :params => params.to_s,
         }, :status => Hatio::Exception::get_status_code(e)

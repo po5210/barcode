@@ -1,19 +1,19 @@
-Ext.define('Bar.view.baseloc.BaselocDetail', {
+Ext.define('Bar.view.loc.LocDetail', {
 	
 	extend : 'Base.abstract.Popup',
 	
  	requires : [ 
-		'Bar.view.baseloc.BaselocForm'
+		'Bar.view.loc.LocForm'
 	],
 	
-	xtype : 'bar_baseloc_detail',
+	xtype : 'bar_loc_detail',
 	
-	height : 430,
+	height : 560,
 	
-	title : T('menu.Baseloc'),
+	title : T('menu.Loc'),
 		
 	items : [ {
-		xtype : 'bar_baseloc_form'
+		xtype : 'bar_loc_form'
 	} ],
 	
 	setRecord : function(record) {

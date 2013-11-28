@@ -1,33 +1,33 @@
 /**
- * Baseloc controller
+ * Loc controller
  */
-Ext.define('Bar.controller.baseloc.Baseloc', {
+Ext.define('Bar.controller.loc.Loc', {
 	
 	extend: 'Base.abstract.entity.ListMainController',
 	
 	requires : [ 
-		'Bar.model.Baseloc', 
-		'Bar.store.Baseloc', 
-		'Bar.view.baseloc.Baseloc' 
+		'Bar.model.Loc', 
+		'Bar.store.Loc', 
+		'Bar.view.loc.Loc' 
 	],
 	
-	models : ['Bar.model.Baseloc'],
+	models : ['Bar.model.Loc'],
 			
-	stores: ['Bar.store.Baseloc'],
+	stores: ['Bar.store.Loc'],
 	
-	views : ['Bar.view.baseloc.Baseloc'],
+	views : ['Bar.view.loc.Loc'],
 	
-	refs: [ { ref : 'Baseloc', selector : 'bar_baseloc' } ],
+	refs: [ { ref : 'Loc', selector : 'bar_loc' } ],
 	
 	init: function() {
 		this.callParent(arguments);
 		
 		this.control({
-			'bar_baseloc' : {
+			'bar_loc' : {
 				paramschange : this.onParamsChange,
 				after_import : this.onImportSuccess
 			},
-			'bar_baseloc_list' : {
+			'bar_loc_list' : {
 				click_add : this.onPopupNew,
 				click_save : this.onGridSave,
 				click_delete : this.onGridDelete,
@@ -36,11 +36,11 @@ Ext.define('Bar.controller.baseloc.Baseloc', {
 				after_grid_updated : this.afterGridUpdated,
 				click_update : this.onInquiryDetail
 			},
-			'bar_baseloc_search' : {
+			'bar_loc_search' : {
 				click_search : this.onSearchClick,
 				click_reset : this.onResetClick
 			},
-			'bar_baseloc_list #go_detail' : {
+			'bar_loc_list #go_detail' : {
 				click : this.onShowDetail
 			}
 		});
@@ -75,6 +75,6 @@ Ext.define('Bar.controller.baseloc.Baseloc', {
 	 * main view를 리턴 
 	 */
 	getMainView : function() {
-		return this.getBaseloc();
+		return this.getLoc();
 	}
 });

@@ -80,6 +80,7 @@ module Hatio
     #
     def convert_like_type_condition_value(operator, value)
       return value unless like_type_operator?(operator)
+      value = value.strip
       
       case operator
       when 'like'         # like
@@ -93,9 +94,9 @@ module Hatio
       when 'dnsw'         # does not start with
         return "#{value}%"
       when 'ew'           # ends with
-        return "#{value}%"
+        return "%#{value}"
       when 'dnew'         # does not end with
-        return "#{value}%"
+        return "%#{value}"
       end
     end
     
@@ -127,9 +128,9 @@ module Hatio
       when 'notin'        # not in
         return " and #{column_name} not in (?)"
       when 'like', 'contains', 'sw', 'ew'     # like
-        return " and #{column_name} like ?"
+        return " and UPPER(#{column_name}) like UPPER(?)"
       when 'nlike', 'dnsw', 'dnew'            # not like
-        return " and #{column_name} not like ?"
+        return " and UPPER(#{column_name}) not like UPPER(?)"
       when 'gt'           # greater than
         return " and #{column_name} > ?"
       when 'gte'          # greater than equal

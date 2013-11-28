@@ -5,8 +5,8 @@ Ext.define('Bar.model.Baseloc', {
 	fields : [
 		{ name : 'id', type : 'string' },
 		{ name : 'domain_id', type : 'string' },
-		{ name : 'baseloc_cd', type : 'string' },
-		{ name : 'baseloc_nm', type : 'string' },
+		{ name : 'name', type : 'string' },
+		{ name : 'description', type : 'string' },
 		{ name : 'baseloc_fg', type : 'string' },
 		{ name : 'div_cd', type : 'string' },
 		{ name : 'inloc_cd', type : 'string' },

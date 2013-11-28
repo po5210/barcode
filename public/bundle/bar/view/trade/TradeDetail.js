@@ -7,8 +7,8 @@ Ext.define('Bar.view.trade.TradeDetail', {
 	],
 	
 	xtype : 'bar_trade_detail',
-
-    height : 700,
+	
+	height : 560,
 	
 	title : T('menu.Trade'),
 		

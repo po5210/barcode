@@ -3,8 +3,8 @@ class CreateBaselocs < ActiveRecord::Migration
 	def self.up
 		create_table :baselocs, :id => :meaningful do |t|
 			t.references :domain, :null => false
-			t.string :baseloc_cd, :null => false, :limit => 4
-			t.string :baseloc_nm, :limit => 30
+			t.string :name, :null => false, :limit => 4
+			t.string :description, :limit => 30
 			t.string :baseloc_fg, :limit => 1
 			t.string :div_cd, :limit => 4
 			t.string :inloc_cd, :limit => 4 
@@ -13,7 +13,7 @@ class CreateBaselocs < ActiveRecord::Migration
 			t.string :use_yn, :limit => 1
 		end
 
-		add_index :baselocs, [:domain_id, :baseloc_cd], :name => :ix_base_loc_0, :unique => true
+		add_index :baselocs, [:domain_id, :name], :name => :ix_base_loc_0, :unique => true
 	end
 
 	def self.down
