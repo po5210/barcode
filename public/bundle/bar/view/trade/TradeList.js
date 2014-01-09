@@ -10,9 +10,8 @@ Ext.define('Bar.view.trade.TradeList', {
 	
 	columns : [
 		{ header : T('label.id'), dataIndex : 'id', hidden : true },
-		{ header : T('label.domain_id'), dataIndex : 'domain_id', sortable : false,  hidden : true },
-		{ header : T('label.code'), dataIndex : 'name' , sortOption : { sortSeq : 10, sortDirection : 'asc' } },
-		{ header : T('label.name'), dataIndex : 'description' },
+		{ header : T('label.code'), dataIndex : 'tr_cd' , sortOption : { sortSeq : 10, sortDirection : 'asc' } },
+		{ header : T('label.name'), dataIndex : 'tr_nm' },
 		{ header : T('label.tr_fg'), dataIndex : 'tr_fg' },
 		{ header : T('label.reg_nb'), dataIndex : 'reg_nb' },
 		{ header : T('label.ppl_nb'), dataIndex : 'ppl_nb' },
@@ -28,7 +27,7 @@ Ext.define('Bar.view.trade.TradeList', {
 		{ header : T('label.tr_nmk'), dataIndex : 'tr_nmk' },
 		{ header : T('label.attr_nmk'), dataIndex : 'attr_nmk' },
 		{ header : T('label.ceo_nmk'), dataIndex : 'ceo_nmk' },
-		{ header : T('label.use_yn'), dataIndex : 'use_yn', xtype : 'codecolumn', tpl : '{description}', commonCode : 'USE_YN' },
+		{ header : T('label.use_yn'), dataIndex : 'use_yn', xtype : 'codecolumn', tpl : '{description}', commonCode : 'YES_NO' },
 		{ header : 'cud flag', dataIndex : '_cud_flag_', hidden : true, sortable : false, width : 0, value : '' }
 	],
 	

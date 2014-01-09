@@ -10,7 +10,6 @@ Ext.define('Bar.view.trade.TradeForm', {
 	
 	items : [
 		{ name : 'id', fieldLabel : T('label.id'), hidden : true },
-		{ name : 'domain_id', value : login.current_domain_id, hidden : true },
 		{ 
 			xtype: 'container',
 			layout: 'hbox',
@@ -22,7 +21,7 @@ Ext.define('Bar.view.trade.TradeForm', {
 					anchor : '90%'
 				},
 			    items: [
-					{ name : 'name', xtype : 'textfield', fieldLabel : T('label.code'), allowBlank : false, maxLength : 5 },
+					{ name : 'tr_cd', xtype : 'textfield', fieldLabel : T('label.code'), allowBlank : false, maxLength : 5 },
 					{ name : 'attr_nm', xtype : 'textfield', fieldLabel : T('label.attr_nm'), maxLength : 60 },
 					{ name : 'tr_fg', xtype : 'textfield', fieldLabel : T('label.tr_fg'), allowBlank : false },
 					{ name : 'reg_nb', xtype : 'textfield', fieldLabel : T('label.reg_nb'), maxLength : 30 },
@@ -40,7 +39,7 @@ Ext.define('Bar.view.trade.TradeForm', {
 					anchor : '100%'
 				},
 				items: [
-					{ name : 'description', xtype : 'textfield', fieldLabel : T('label.name'), maxLength : 60 },
+					{ name : 'tr_nm', xtype : 'textfield', fieldLabel : T('label.name'), maxLength : 60 },
 					{ name : 'div_addr1', xtype : 'textfield', fieldLabel : T('label.div_addr1'), maxLength : 90 },
 					{ name : 'addr2', xtype : 'textfield', fieldLabel : T('label.addr2'), maxLength : 30 },
 					{ name : 'ddd', xtype : 'textfield', fieldLabel : T('label.ddd'), maxLength : 4 },
@@ -53,9 +52,9 @@ Ext.define('Bar.view.trade.TradeForm', {
 			} ]
 		}, 
 
-		{ fieldLabel : T('label.use_yn'), name : 'use_yn', xtype : 'codecombo', commonCode : 'USE_YN', displayField : 'description' },
-		{ xtype : 'datefield', name : 'created_at', disabled : true, fieldLabel : T('label.created_at'), format : T('format.datetime') },
-		{ xtype : 'datefield', name : 'updated_at', disabled : true, fieldLabel : T('label.updated_at'), format : T('format.datetime') },
+		{ fieldLabel : T('label.use_yn'), name : 'use_yn', xtype : 'codecombo', commonCode : 'YES_NO', displayField : 'description' },
+		//{ xtype : 'datefield', name : 'created_at', disabled : true, fieldLabel : T('label.created_at'), format : T('format.datetime') },
+		//{ xtype : 'datefield', name : 'updated_at', disabled : true, fieldLabel : T('label.updated_at'), format : T('format.datetime') },
 	],
 
 	dockedItems: [ {

@@ -5,7 +5,7 @@ Ext.define('Base.view.field.EntityField', {
 
 	triggerCls: Ext.baseCSSPrefix + 'form-arrow-trigger',
 
-	editable: true,
+	editable: false,
 	
 	matchFieldWidth : false,
 	

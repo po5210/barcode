@@ -4,9 +4,8 @@ Ext.define('Bar.model.Trade', {
     
 	fields : [
 		{ name : 'id', type : 'string' },
-		{ name : 'domain_id', type : 'string' },
-		{ name : 'name', type : 'string' },
-		{ name : 'description', type : 'string' },
+		{ name : 'tr_cd', type : 'string' },
+		{ name : 'tr_nm', type : 'string' },
 		{ name : 'attr_nm', type : 'string' },
 		{ name : 'tr_fg', type : 'string' },
 		{ name : 'reg_nb', type : 'string' },
@@ -24,17 +23,15 @@ Ext.define('Bar.model.Trade', {
 		{ name : 'attr_nmk', type : 'string' },
 		{ name : 'ceo_nmk', type : 'string' },
 		{ name : 'use_yn', type : 'string' },
-		{ name : 'creator_id', type : 'string' },
-		{ name : 'creator', type : 'auto' },
-		{ name : 'updater_id', type : 'string' },
-		{ name : 'updater', type : 'auto' },
-		{ name : 'created_at', type : 'date' },
-		{ name : 'updated_at', type : 'date' },
+		{ name : 'reg_id', type : 'string' },
+		{ name : 'mod_id', type : 'string' },
+		{ name : 'reg_dtm', type : 'string' },
+		{ name : 'mod_dtm', type : 'string' },
 		{ name : '_cud_flag_', type : 'string' }
 	],
 
 	validations : [
-		{type : 'presence', field : 'name'}
+		{type : 'presence', field : 'tr_cd'}
 	],
 	
   	proxy: {

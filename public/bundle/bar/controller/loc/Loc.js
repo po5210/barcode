@@ -56,6 +56,31 @@ Ext.define('Bar.controller.loc.Loc', {
 		var gridView = this.getGridView();
 		gridView.store.load();
 	},
+	
+	/**
+	 * delete button click
+	 */			
+	onGridDelete : function(view) {
+		var selections = view.getSelectionModel().getSelection();
+		if(selections.length > 0) {
+			HF.msg.confirm({
+				msg : T('text.Sure to Delete'),
+				fn : function(confirmBtn) {
+					if(confirmBtn == 'yes') {
+						var record = Ext.create('Bar.model.Loc', {id : selections[0].data.id});
+						record.destroy({
+							success: function(record, operation) {
+								view.fireEvent('after_grid_updated', view, 'd', operation);
+							}
+						});
+					}
+				},
+				scope : this
+			});
+		} else {
+			HF.msg.notice(T('text.Nothing selected'));
+		}		
+	},	
 			
 	/****************************************************************
 	 ** 			여기서 부터는 abstract method, 필수 구현 				   **

@@ -39,12 +39,14 @@ class DomainResourcesController < InheritedResources::Base
   
   def update_multiple
     delete_list, update_list, create_list = self.refine_multiple_data(params[:multiple_data])
-    # 1. delete
-    self.destroy_multiple_data(resource_class, delete_list)
-    # 2. update
-    self.update_multiple_data(resource_class, update_list, 'id', [], {})
-    # 3. create
-    self.create_multiple_data(resource_class, create_list, true, 'id', [], {})
+    resource_class.transaction do
+      # 1. delete
+      self.destroy_multiple_data(resource_class, delete_list)
+      # 2. update
+      self.update_multiple_data(resource_class, update_list, 'id', [], {})
+      # 3. create
+      self.create_multiple_data(resource_class, create_list, true, 'id', [], {})
+    end
     
     respond_to do |format|
       format.xml  { render :xml => {:success => true, :msg => 'Success'} }

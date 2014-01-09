@@ -105,6 +105,7 @@ Ext.define('mixin.AjaxAspect', function() {
 					server_response : error
 				}
 			} catch(e) {
+				err['msg'] = err['msg'] + '<br/>' + resp.responseText;
 			}
 		}
 		

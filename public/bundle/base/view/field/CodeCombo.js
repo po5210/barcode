@@ -5,6 +5,8 @@ Ext.define('Base.view.field.CodeCombo', {
 
     anchor: '100%',
 
+	editable : false,
+
 	config : {
 		valueField : 'name',
 		displayField : 'name',
