@@ -28,3 +28,7 @@ Gemfile.lock
 
 config/database.yml
 .idea
+
+/rails3.2.8
+.rbenv-gemsets
+

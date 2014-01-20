@@ -1,5 +1,6 @@
 puts "Menu creating..."
 
+domain = Domain.system_domain
 Menu.setup domain, :Barcode, {:rank => 1000} do
   submenu :Master, {:rank => 1100, :menu_type => 'SEPARATOR'}
   submenu :Trade, {:rank => 1200, :template => 'Bar.view.trade.Trade'}

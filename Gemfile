@@ -22,6 +22,7 @@ platforms :jruby do
   # torquebox
   gem 'torquebox-messaging', '2.3.1'
   gem 'ruby-plsql'
+  gem 'rubyzip', '< 1.0.0'
 end
 
 # Gems used only for assets and not required

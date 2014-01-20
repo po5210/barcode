@@ -1,4 +1,4 @@
-class BaselocsController < DomainResourcesController
+class BaselocsController < ProcedureResourcesController
   
   skip_before_filter :verify_authenticity_token
   
