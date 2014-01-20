@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+  xmlns:x="urn:schemas-microsoft-com:office:excel"
+  xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:html="http://www.w3.org/TR/REC-html40">
+  <Worksheet ss:Name="Sheet1">
+    <Table>
+      <Row>
+		<Cell><Data ss:Type="String">Trade Code</Data></Cell>
+		<Cell><Data ss:Type="String">Trade Name</Data></Cell>
+		<Cell><Data ss:Type="String">Attr Name</Data></Cell>
+		<Cell><Data ss:Type="String">Trade Flag</Data></Cell>
+		<Cell><Data ss:Type="String">Reg. No.</Data></Cell>
+		<Cell><Data ss:Type="String">PPL No.</Data></Cell>		
+		<Cell><Data ss:Type="String">CEO Name</Data></Cell>
+		<Cell><Data ss:Type="String">Maint. Part</Data></Cell>
+		<Cell><Data ss:Type="String">Business</Data></Cell>
+		<Cell><Data ss:Type="String">Jongmok</Data></Cell>
+		<Cell><Data ss:Type="String">ZIP</Data></Cell>
+		<Cell><Data ss:Type="String">Addr1</Data></Cell>
+		<Cell><Data ss:Type="String">Addr2</Data></Cell>
+		<Cell><Data ss:Type="String">DDD</Data></Cell>
+		<Cell><Data ss:Type="String">Tel.</Data></Cell>
+		<Cell><Data ss:Type="String">Fax</Data></Cell>
+		<Cell><Data ss:Type="String">Trade Nmk</Data></Cell>
+		<Cell><Data ss:Type="String">Attr Nmk</Data></Cell>
+		<Cell><Data ss:Type="String">CEO Nmk</Data></Cell>
+		<Cell><Data ss:Type="String">Use Y/N</Data></Cell>
+      </Row>
+    <% @collection.each do |item| %>
+      <Row>
+		<Cell><Data ss:Type="String"><%= item["tr_cd"] %></Data></Cell>
+		<Cell><Data ss:Type="String"><%= item["tr_nm"] %></Data></Cell>
+		<Cell><Data ss:Type="String"><%= item["attr_nm"] %></Data></Cell>
+		<Cell><Data ss:Type="String"><%= item["tr_fg"] %></Data></Cell>
+		<Cell><Data ss:Type="String"><%= item["reg_nb"] %></Data></Cell>
+		<Cell><Data ss:Type="String"><%= item["ppl_nb"] %></Data></Cell>
+		<Cell><Data ss:Type="String"><%= item["ceo_nm"] %></Data></Cell>		
+		<Cell><Data ss:Type="String"><%= item["business"] %></Data></Cell>
+		<Cell><Data ss:Type="Number"><%= item["jongmok"] %></Data></Cell>
+		<Cell><Data ss:Type="String"><%= item["zip"] %></Data></Cell>
+		<Cell><Data ss:Type="Number"><%= item["div_addr1"] %></Data></Cell>
+		<Cell><Data ss:Type="String"><%= item["addr2"] %></Data></Cell>
+		<Cell><Data ss:Type="String"><%= item["ddd"] %></Data></Cell>
+		<Cell><Data ss:Type="String"><%= item["tel"] %></Data></Cell>
+		<Cell><Data ss:Type="String"><%= item["fax"] %></Data></Cell>
+		<Cell><Data ss:Type="String"><%= item["tr_nmk"] %></Data></Cell>
+		<Cell><Data ss:Type="String"><%= item["attr_nmk"] %></Data></Cell>
+		<Cell><Data ss:Type="String"><%= item["ceo_nmk"] %></Data></Cell>
+		<Cell><Data ss:Type="String"><%= item["use_yn"] %></Data></Cell>
+      </Row>
+    <% end %>
+    </Table>
+  </Worksheet>
+</Workbook>

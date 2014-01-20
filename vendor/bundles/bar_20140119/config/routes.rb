@@ -1,12 +1,6 @@
 Hatio::Application.routes.draw do
 
   resources :domains do
-		resources :bar_locmaps do
-			collection do
-				post :update_multiple
-			end
-		end
-
 		resources :locs do
 			collection do
 				post :update_multiple

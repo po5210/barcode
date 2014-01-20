@@ -9,6 +9,8 @@ class DomainResourcesController < InheritedResources::Base
     conditions, include_arr, order_str, limit, offset = search_filter resource_class
     @total_count = collection.where(conditions).count
     @collection = collection.includes(include_arr).where(conditions).order(order_str).limit(limit).offset(offset)
+    
+    debug_print @collection.inspect
   end
   
   def show_by_name

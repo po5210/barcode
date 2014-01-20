@@ -1,0 +1,58 @@
+create or replace
+PROCEDURE         SP_TRADE_CREATE
+(
+    TR_CD           IN          VARCHAR2,
+    TR_NM           IN          VARCHAR2,
+    ATTR_NM         IN          VARCHAR2,
+    TR_FG           IN          VARCHAR2,
+    REG_NB          IN          VARCHAR2,
+    PPL_NB          IN          VARCHAR2,
+    CEO_NM          IN          VARCHAR2,
+    BUSINESS        IN          VARCHAR2,
+    JONGMOK         IN          VARCHAR2,
+    ZIP             IN          VARCHAR2,
+    DIV_ADDR1       IN          VARCHAR2,
+    ADDR2           IN          VARCHAR2,
+    DDD             IN          VARCHAR2,
+    TEL             IN          VARCHAR2,
+    FAX             IN          VARCHAR2,
+    TR_NMK          IN          VARCHAR2,
+    ATTR_NMK        IN          VARCHAR2,
+    CEO_NMK         IN          VARCHAR2,    
+    USE_YN          IN          VARCHAR2,  
+    REG_ID          IN          VARCHAR2,    
+    RESULT_MSG      OUT         VARCHAR2
+)
+ IS
+    V_TR_CD                     VARCHAR2(10);
+    N_TRADE_CNT                 NUMBER(2); 
+    V_ERR_MSG                   VARCHAR2(1000); 
+BEGIN
+    V_TR_CD := TR_CD;
+   SELECT COUNT(*) INTO N_TRADE_CNT FROM TRADE WHERE TR_CD = V_TR_CD; 
+   
+   DBMS_OUTPUT.PUT_LINE('COUNT IS : ' || N_TRADE_CNT);
+   
+   IF(N_TRADE_CNT >= 1) THEN
+        RESULT_MSG := 'TR_CD ' || TR_CD || ' ALREADY EXIST!';    
+   ELSE
+        INSERT INTO TRADE (
+            TR_CD, TR_NM, ATTR_NM, TR_FG, REG_NB, PPL_NB, CEO_NM, BUSINESS,
+            JONGMOK, ZIP, DIV_ADDR1, ADDR2, DDD, TEL, FAX, TR_NMK, ATTR_NMK,
+            CEO_NMK, USE_YN, REG_ID, REG_DTM, MOD_ID, MOD_DTM
+        ) VALUES (
+            TR_CD, TR_NM, ATTR_NM, TR_FG, REG_NB, PPL_NB, CEO_NM, BUSINESS,
+            JONGMOK, ZIP, DIV_ADDR1, ADDR2, DDD, TEL, FAX, TR_NMK, ATTR_NMK,
+            CEO_NMK, USE_YN, REG_ID, TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS'), REG_ID, TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')                        
+        );
+        
+        RESULT_MSG := 'SUCCESS';
+   END IF;
+   
+   COMMIT;
+   
+EXCEPTION
+    WHEN OTHERS THEN
+        RESULT_MSG := 'ERROR CODE :' || TO_CHAR(SQLCODE) || ', ' || SQLERRM;  
+
+END SP_TRADE_CREATE;
