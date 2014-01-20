@@ -40,6 +40,14 @@ Hatio::Application.routes.draw do
         post :import
 			end
 		end
+    
+    resources :invoices do
+      collection do
+        post :update_multiple
+        get :export
+        post :import
+      end
+    end  
 
 	end
 	
