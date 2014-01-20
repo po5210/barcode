@@ -9,7 +9,7 @@ Ext.define('Bar.model.BarLocmap', {
 		{ name : 'name', type : 'string' },
 		{ name : 'description', type : 'string' },
 		{ name : 'loc_nmk', type : 'string' },
-		{ name : 'loc_dc', type : 'string' },
+		{ name : 'loc_cd', type : 'string' },
 		{ name : 'use_yn', type : 'string' },
 		{ name : 'creator_id', type : 'string' },
 		{ name : 'creator', type : 'auto' },
