@@ -15,7 +15,7 @@ Ext.define('Bar.view.bar_locmap.BarLocmapForm', {
 		{ name : 'name', fieldLabel : T('label.name'), allowBlank : false, maxLength : 64 },
 		{ name : 'description', fieldLabel : T('label.description'), maxLength : 255 },
 		{ name : 'loc_nmk', fieldLabel : T('label.loc_nmk') },
-		{ name : 'loc_cd', fieldLabel : T('label.loc_cd') },
+		{ name : 'loc_dc', fieldLabel : T('label.loc_dc') },
 		{ fieldLabel : T('label.use_yn'), name : 'use_yn', xtype : 'codecombo', commonCode : 'USE_YN', displayField : 'description' },
 		{ xtype : 'datefield', name : 'created_at', disabled : true, fieldLabel : T('label.created_at'), format : T('format.datetime') },
 		{ xtype : 'datefield', name : 'updated_at', disabled : true, fieldLabel : T('label.updated_at'), format : T('format.datetime') },
