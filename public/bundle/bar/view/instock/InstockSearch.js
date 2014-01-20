@@ -21,7 +21,7 @@ Ext.define('Bar.view.instock.InstockSearch', {
 			fieldLabel : T('label.supplier'), 
 			name : 'supplier', 
 			xtype : 'entitysearchcombo', 
-			storeClass : 'Bar.store.Trade', 
+			storeClass : 'Bar.store.Supplier', 
 			valueField : 'name' 
 		}
 	]

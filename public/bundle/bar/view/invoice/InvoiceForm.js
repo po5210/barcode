@@ -24,7 +24,8 @@ Ext.define('Bar.view.invoice.InvoiceForm', {
 					{ 
 						fieldLabel : T('label.product'), 
 						name : 'product', 
-						xtype : 'textfield', 
+						xtype : 'entitycombo', 
+						customSelectionUrl : '/domains/' + login.current_domain_id + '/diy_selections/SelectBarItems/query.json',
 						allowBlank : false 
 					},
 					{ 
