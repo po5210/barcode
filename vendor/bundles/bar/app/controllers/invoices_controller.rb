@@ -8,65 +8,27 @@ class InvoicesController < ProcedureResourcesController
   # GET /domains/:domain_id/invoices.json
   #
   def index
-    args = params["_q"]
-    arg_tr_cd = args["tr_cd"]
-    arg_tr_nm = args["tr_nm"]
-    arg_tr_fg = args["tr_fg"]
-    arg_reg_nb = args["reg_nb"]
-    arg_use_yn = args["use_yn"]
-    arg_start = params[:start]
-    arg_limit = params[:limit]
-    
-    conn = ActiveRecord::Base.connection()
-    plsql = get_plsql
-    index_cursor, list, @collection, result = nil, nil, [], nil
-    
+    result = {}
     begin
-      plsql.barcode.sp_trade_index(
-        :arg_tr_cd => arg_tr_cd, 
-        :arg_tr_nm => arg_tr_nm, 
-        :arg_tr_fg => arg_tr_fg, 
-        :arg_reg_nb => arg_reg_nb, 
-        :arg_use_yn => arg_use_yn, 
-        :arg_start => arg_start,
-        :arg_limit => arg_limit,
-        :index_cursor => index_cursor) do |c|
-        list = c[:index_cursor].fetch_all
-        c[:index_cursor].close
-      end
-      
-      total_size = conn.select_all("SELECT COUNT(*) CNT FROM TRADE")
-      @total_count = total_size[0]["cnt"]
-      @collection = list.collect do |rec|
-        {
-          :id => rec[0],
-          :tr_cd => rec[0],
-          :tr_nm => rec[1],
-          :attr_nm => rec[2],
-          :tr_fg => rec[3],
-          :reg_nb => rec[4],
-          :ppl_nb => rec[5],
-          :ceo_nm => rec[6],
-          :business => rec[7],
-          :jongmok => rec[8],
-          :zip => rec[9],
-          :div_addr1 => rec[10],
-          :addr2 => rec[11],
-          :ddd => rec[12],
-          :tel => rec[13],
-          :fax => rec[14],
-          :tr_nmk => rec[15],
-          :attr_nmk => rec[16],
-          :ceo_nmk => rec[17],
-          :use_yn => rec[18],
-          :reg_id => rec[19],
-          :reg_dtm => rec[20],
-          :mod_id => rec[21],
-          :mod_dtm => rec[22]
-        }
-      end
-      
-      result = {:items => @collection, :total => @total_count, :success => true}
+      conn = ActiveRecord::Base.connection()
+      master_sql = "SELECT 
+          TO_CHAR(TO_DATE(I.BILL_DT, 'YYYYMMDD'), 'YYYY-MM-DD') BILL_DT,
+          TO_CHAR(TO_DATE(I.INVOICE_DATE, 'YYYYMMDD'), 'YYYY-MM-DD') INVOICE_DATE,
+          I.TR_CD, S.DESCRIPTION TR_NM, INVOICE_NO, PO_NO, TR_CD
+        FROM 
+          BAR_INVHEAD I, SUPPLIERS S 
+        WHERE 
+          I.TR_CD = S.NAME AND
+          I.BILL_NB = '#{params[:bill_nb]}'"
+      detail_sql = "SELECT I.*, P.DESCRIPTION ITEM_NM FROM BAR_INVDETAIL I, PRODUCTS P WHERE I.BILL_NB = '#{params[:bill_nb]}' AND I.ITEM_CD = P.NAME"
+      master = conn.select_all(master_sql)
+      details = conn.select_all(detail_sql)
+      result = {
+        :master => master[0],
+        :items => details,
+        :total_count => details.size,
+        :success => true
+      }
     rescue Exception => e
       raise Hatio::Exception::InvalidRequest, "ERROR : #{e.to_s}"
     end
@@ -105,40 +67,40 @@ class InvoicesController < ProcedureResourcesController
   # POST /domains/:domain_id/invoices/create.json
   #  
   def create
-    conn, result_msg = ActiveRecord::Base.connection(), nil    
-    begin
-      plsql = get_plsql
-      result_msg = plsql.barcode.SP_TRADE_CREATE(
-       :tr_cd => params[:tr_cd], 
-       :tr_nm => params[:tr_nm], 
-       :attr_nm => params[:attr_nm], 
-       :tr_fg => params[:tr_fg], 
-       :reg_nb => params[:reg_nb], 
-       :ppl_nb => params[:ppl_nb], 
-       :ceo_nm => params[:ceo_nm], 
-       :business => params[:business],
-       :jongmok => params[:jongmok], 
-       :zip => params[:zip], 
-       :div_addr1 => params[:div_addr1], 
-       :addr2 => params[:addr2], 
-       :ddd => params[:ddd], 
-       :tel => params[:tel], 
-       :fax => params[:fax], 
-       :tr_nmk => params[:tr_nmk], 
-       :attr_nmk => params[:attr_nmk], 
-       :ceo_nmk => params[:ceo_nmk], 
-       :use_yn => params[:use_yn], 
-       :reg_id => current_user.id,
-       :result_msg => result_msg)[:result_msg]
-    rescue Exception => e
-      raise Hatio::Exception::InvalidRequest, "ERROR : #{e.to_s}"
+    inv_params = params[:invoice]
+    item_infos_str, bill_dt, item_sq, r_bill_nb = "", parse_date(inv_params[:bill_dt]).strftime('%Y%m%d'), 1, nil
+    inv_params[:item_info].each do |item|
+      item_infos_str << "^" unless(item_infos_str.empty?)
+      item_infos_str << "#{item_sq}|#{item[:item_cd]}|#{item[:bill_qt]}|#{item[:unit_price]}|#{item[:lot_size]}|#{item[:price]}|#{item[:cust_part_no]}"
+      item_sq += 1
     end
     
-    raise Hatio::Exception::InvalidRequest, "ERROR : #{result_msg}" if(result_msg != "SUCCESS")
+    begin
+      plsql = get_plsql
+      r_bill_nb = plsql.SP_BAR_SET_BAR_INV_NEW(
+        :arg_language     => 'en',
+        :arg_dateformat   => 'YYYY-MM-DD',
+        :p_bill_nb        => inv_params[:bill_nb],
+        :p_tr_cd          => inv_params[:tr_cd],
+        :p_bill_dt        => bill_dt,
+        :p_lot_no         => bill_dt,
+        :p_print_yn       => '0',
+        :arg_invoceno     => inv_params[:invoice_no],
+        :arg_pono         => inv_params[:po_no],
+        :p_item_info      => item_infos_str,
+        :p_reg_id         => current_user.id,
+        :p_reg_ip         => request.remote_ip,
+        :arg_invoice_date => parse_date(inv_params[:invoice_date]).strftime('%Y%m%d'),
+        :r_bill_nb        => r_bill_nb,
+      )[:r_bill_nb]
+      
+    rescue Exception => e
+      raise Hatio::Exception::InvalidRequest, "ERROR : #{e.to_s}"
+    end    
     
     respond_to do |format|
-      format.xml  { render :xml => {:success => true, :msg => "Success"} }
-      format.json { render :json => {:success => true, :msg => "Success"} }
+      format.xml  { render :xml => {:success => true, :msg => "Success", :bill_nb => r_bill_nb} }
+      format.json { render :json => {:success => true, :msg => "Success", :bill_nb => r_bill_nb} }
     end
   end
   

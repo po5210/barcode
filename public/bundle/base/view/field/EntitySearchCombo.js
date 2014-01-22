@@ -42,5 +42,13 @@ Ext.define('Base.view.field.EntitySearchCombo', {
 				entityDescText.setValue(record[0].data.description);
 			}
 		});
+	},
+	
+	resetValue : function() {
+		var entityCombo = this.down(' entitynamecombo');
+		var entityValueText = this.down(' textfield');
+		var entityDescText = this.down(' textfield[name=' + this.name + '-desc]');
+		entityValueText.setValue('');
+		entityDescText.setValue('');
 	}
 });
