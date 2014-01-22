@@ -22,7 +22,7 @@ class TradesController < ProcedureResourcesController
     index_cursor, list, @collection, result = nil, nil, [], nil
     
     begin
-      plsql.barcode.sp_trade_index(
+      plsql.sp_trade_index(
         :arg_tr_cd => arg_tr_cd, 
         :arg_tr_nm => arg_tr_nm, 
         :arg_tr_fg => arg_tr_fg, 
@@ -108,7 +108,7 @@ class TradesController < ProcedureResourcesController
     conn, result_msg = ActiveRecord::Base.connection(), nil    
     begin
       plsql = get_plsql
-      result_msg = plsql.barcode.SP_TRADE_CREATE(
+      result_msg = plsql.SP_TRADE_CREATE(
        :tr_cd => params[:tr_cd], 
        :tr_nm => params[:tr_nm], 
        :attr_nm => params[:attr_nm], 
