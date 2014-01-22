@@ -3,7 +3,7 @@ class CreateBarLocmaps < ActiveRecord::Migration
 	def self.up
 		create_table :bar_locmaps, :id => :meaningful do |t|
 			t.references :domain
-			t.string :baseloc_cd
+			t.references :bar_locgrp
 			t.string :name
 			t.string :description
 			t.string :loc_nmk

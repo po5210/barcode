@@ -5,7 +5,8 @@ Ext.define('Bar.model.BarLocmap', {
 	fields : [
 		{ name : 'id', type : 'string' },
 		{ name : 'domain_id', type : 'string' },
-		{ name : 'baseloc_cd', type : 'string' },
+		{ name : 'bar_locgrp_id', type : 'string' },
+		{ name : 'bar_locgrp', type : 'auto' },
 		{ name : 'name', type : 'string' },
 		{ name : 'description', type : 'string' },
 		{ name : 'loc_nmk', type : 'string' },

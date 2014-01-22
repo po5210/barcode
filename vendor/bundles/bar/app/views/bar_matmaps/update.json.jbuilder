@@ -1,0 +1,2 @@
+json.(@bar_matmap, :id,:domain_id,:name,:description,:supplier_id,:item_tp,:acct_fg,:odr_fg,:assgwh_cd,:assflc_cd,:qc_fg,:item_nmk,:item_tpk,:use_yn,:str_cd,:str_nm,:unit,:item_gb,:barcode_yn,:box_l,:part_gcd,:box_w,:box_h,:box_qty,:pallet_l,:pallet_w,:pallet_h,:pallet_row,:pallet_column,:pallet_layer,:pallet_bqty,:pallet_qty,:bar_locgrp_id,:bar_locmap_id,:ckdbox_l,:ckdbox_w,:ckdbox_h,:ckdbox_qty,:label_print_fg,:trmain_cd,:model_no,:customer_cd,:assy_hccd_nm,:emp_cd,:cust_tr_cd,:cust_item_cd,:cust_item_nm,:creator_id,:updater_id,:created_at,:updated_at,:reg_ip,:mod_ip)
+		

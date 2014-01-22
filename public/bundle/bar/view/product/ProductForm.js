@@ -1,0 +1,83 @@
+Ext.define('Bar.view.product.ProductForm', {
+	
+	extend : 'Ext.form.Panel',
+	
+	xtype : 'bar_product_form',
+		
+	autoScroll : true,
+	
+	defaults : { xtype : 'textfield', anchor : '100%' },
+	
+	items : [
+		{ name : 'id', fieldLabel : T('label.id'), hidden : true },
+		{ name : 'domain_id', value : login.current_domain_id, hidden : true },
+		{ name : 'name', fieldLabel : T('label.code'), allowBlank : false, maxLength : 64 },
+		{ name : 'description', fieldLabel : T('label.name'), maxLength : 255 },		
+		{ name : 'unit', fieldLabel : T('label.unit') },
+		{ name : 'default_qty', fieldLabel : T('label.default_qty'), xtype : 'numberfield' },		
+		{ fieldLabel : T('title.bar_locgrp'), name : 'bar_locgrp', xtype : 'entityfield', storeClass : 'Bar.store.BarLocgrp' },
+		{ fieldLabel : T('title.bar_locmap'), name : 'bar_locmap', xtype : 'entityfield', storeClass : 'Bar.store.BarLocmap' },
+		{ name : 'routing', fieldLabel : T('label.routing') },
+		{ fieldLabel : T('label.use_yn'), name : 'use_yn', xtype : 'codecombo', commonCode : 'USE_YN', displayField : 'description' },
+		{ xtype : 'datefield', name : 'created_at', disabled : true, fieldLabel : T('label.created_at'), format : T('format.datetime') },
+		{ xtype : 'datefield', name : 'updated_at', disabled : true, fieldLabel : T('label.updated_at'), format : T('format.datetime') },
+		
+/*
+		{ name : 'short_name', fieldLabel : T('label.short_name') },
+		{ name : 'prod_type', fieldLabel : T('label.prod_type') },
+		{ name : 'prod_class', fieldLabel : T('label.prod_class') },
+		{ name : 'cycletime', fieldLabel : T('label.cycletime'), xtype : 'numberfield' },
+		{ name : 'weight', fieldLabel : T('label.weight'), xtype : 'numberfield' },
+		{ name : 'waste_cost', fieldLabel : T('label.waste_cost'), xtype : 'numberfield' },
+		{ name : 'flow_id', fieldLabel : T('label.flow_id') },
+		{ name : 'customer_id', fieldLabel : T('label.customer_id') },
+		{ name : 'cust_part_no', fieldLabel : T('label.cust_part_no') },
+		{ name : 'erp_ifc_flag', fieldLabel : T('label.erp_ifc_flag'), xtype : 'numberfield' },
+		{ name : 'useless_flag', fieldLabel : T('label.useless_flag'), xtype : 'numberfield' },
+		{ xtype : 'datetimefield', name : 'deleted_at', fieldLabel : T('label.deleted_at'), format : T('format.date') },
+		{ name : 'acct_fg', fieldLabel : T('label.acct_fg') },
+		{ name : 'odr_fg', fieldLabel : T('label.odr_fg') },
+		{ name : 'assgwh_cd', fieldLabel : T('label.assgwh_cd') },
+		{ name : 'assflc_cd', fieldLabel : T('label.assflc_cd') },
+		{ name : 'qc_fg', fieldLabel : T('label.qc_fg') },
+		{ name : 'item_nmk', fieldLabel : T('label.item_nmk') },
+		{ name : 'item_tpk', fieldLabel : T('label.item_tpk') },		
+		{ name : 'item_gb', fieldLabel : T('label.item_gb') },
+		{ name : 'part_gcd', fieldLabel : T('label.part_gcd'), xtype : 'numberfield' },
+		{ name : 'barcode_yn', fieldLabel : T('label.barcode_yn') },
+		{ name : 'box_l', fieldLabel : T('label.box_l'), xtype : 'numberfield' },
+		{ name : 'box_w', fieldLabel : T('label.box_w'), xtype : 'numberfield' },
+		{ name : 'box_h', fieldLabel : T('label.box_h'), xtype : 'numberfield' },
+		{ name : 'box_qty', fieldLabel : T('label.box_qty'), xtype : 'numberfield' },
+		{ name : 'pallet_l', fieldLabel : T('label.pallet_l'), xtype : 'numberfield' },
+		{ name : 'pallet_h', fieldLabel : T('label.pallet_h'), xtype : 'numberfield' },
+		{ name : 'pallet_w', fieldLabel : T('label.pallet_w'), xtype : 'numberfield' },
+		{ name : 'pallet_row', fieldLabel : T('label.pallet_row'), xtype : 'numberfield' },
+		{ name : 'pallet_column', fieldLabel : T('label.pallet_column'), xtype : 'numberfield' },
+		{ name : 'pallet_layer', fieldLabel : T('label.pallet_layer'), xtype : 'numberfield' },
+		{ name : 'pallet_bqty', fieldLabel : T('label.pallet_bqty'), xtype : 'numberfield' },
+		{ name : 'pallet_qty', fieldLabel : T('label.pallet_qty'), xtype : 'numberfield' },
+		{ name : 'ckdbox_l', fieldLabel : T('label.ckdbox_l'), xtype : 'numberfield' },
+		{ name : 'ckdbox_w', fieldLabel : T('label.ckdbox_w'), xtype : 'numberfield' },
+		{ name : 'ckdbox_h', fieldLabel : T('label.ckdbox_h'), xtype : 'numberfield' },
+		{ name : 'ckdbox_qty', fieldLabel : T('label.ckdbox_qty'), xtype : 'numberfield' },		
+		{ name : 'label_print_fg', fieldLabel : T('label.label_print_fg') },
+		{ name : 'trmain_cd', fieldLabel : T('label.trmain_cd') },
+		{ name : 'model_no', fieldLabel : T('label.model_no') },
+		{ name : 'customer_cd', fieldLabel : T('label.customer_cd') },
+		{ name : 'assy_hccd_nm', fieldLabel : T('label.assy_hccd_nm') },
+		{ name : 'cust_tr_cd', fieldLabel : T('label.cust_tr_cd') },
+		{ name : 'cust_item_cd', fieldLabel : T('label.cust_item_cd') },
+		{ name : 'cust_item_nm', fieldLabel : T('label.cust_item_nm') },
+		{ name : 'item_tp', fieldLabel : T('label.item_tp') },
+		{ name : 'version', fieldLabel : T('label.version'), xtype : 'numberfield' },
+		{ xtype : 'datetimefield', name : 'eff_start_date', fieldLabel : T('label.eff_start_date'), format : T('format.date') },
+		{ xtype : 'datetimefield', name : 'eff_end_date', fieldLabel : T('label.eff_end_date'), format : T('format.date') },
+*/		
+	],
+
+	dockedItems: [ {
+		xtype: 'controlbar',
+		items : ['->', 'save', 'close']
+	} ]
+});

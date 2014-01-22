@@ -11,12 +11,11 @@ Ext.define('Bar.view.supplier.SupplierForm', {
 	items : [
 		{ name : 'id', fieldLabel : T('label.id'), hidden : true },
 		{ name : 'domain_id', value : login.current_domain_id, hidden : true },
-		{ name : 'name', fieldLabel : T('label.name'), allowBlank : false, maxLength : 64 },
-		{ name : 'description', fieldLabel : T('label.description'), maxLength : 255 },
+		{ name : 'name', fieldLabel : T('label.code'), allowBlank : false, maxLength : 64 },
+		{ name : 'description', fieldLabel : T('label.name'), maxLength : 255 },
+/*		
 		{ name : 'erp_ifc_flag', fieldLabel : T('label.erp_ifc_flag'), xtype : 'numberfield' },
-		{ xtype : 'datetimefield', name : 'deleted_at', fieldLabel : T('label.deleted_at'), format : T('format.date') },
-		{ xtype : 'datefield', name : 'created_at', disabled : true, fieldLabel : T('label.created_at'), format : T('format.datetime') },
-		{ xtype : 'datefield', name : 'updated_at', disabled : true, fieldLabel : T('label.updated_at'), format : T('format.datetime') },
+		{ xtype : 'datetimefield', name : 'deleted_at', fieldLabel : T('label.deleted_at'), format : T('format.date') },		
 		{ name : 'version', fieldLabel : T('label.version') },
 		{ name : 'supply_fg', fieldLabel : T('label.supply_fg') },
 		{ name : 'reg_nb', fieldLabel : T('label.reg_nb') },
@@ -31,6 +30,9 @@ Ext.define('Bar.view.supplier.SupplierForm', {
 		{ name : 'tel', fieldLabel : T('label.tel') },
 		{ name : 'fax', fieldLabel : T('label.fax') },
 		{ name : 'use_yn', fieldLabel : T('label.use_yn') },
+*/		
+		{ xtype : 'datefield', name : 'created_at', disabled : true, fieldLabel : T('label.created_at'), format : T('format.datetime') },
+		{ xtype : 'datefield', name : 'updated_at', disabled : true, fieldLabel : T('label.updated_at'), format : T('format.datetime') },
 	],
 
 	dockedItems: [ {

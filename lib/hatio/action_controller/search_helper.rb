@@ -97,6 +97,12 @@ module Hatio
         return "%#{value}"
       when 'dnew'         # does not end with
         return "%#{value}"
+      when 'in'
+      	val_arr = value.split(",")
+      	return val_arr;
+      when 'notin' 
+      	val_arr = value.split(",")
+      	return val_arr;      
       end
     end
     
@@ -108,10 +114,10 @@ module Hatio
     end
     
     #
-    # 검색 조건 중에 like 타입의 조건인지를 판단한다. 
+    # 검색 조건 중에 like 타입의 조건인지를 판단한다. - in, notin도 포함
     #
     def like_type_operator?(operator)
-      ['like', 'contains', 'nlike', 'sw', 'dnsw', 'ew', 'dnew'].include?(operator)
+      ['like', 'contains', 'nlike', 'sw', 'dnsw', 'ew', 'dnew', 'in', 'notin'].include?(operator)
     end
     
     #
@@ -173,7 +179,7 @@ module Hatio
         condition_str << get_condition_str(filter_name, operator)
         # like 타입이라면 검색 조건이라면 like문에 맞게 값에 %를 붙인다. ('%찾을 문자열%', '%찾을 문자열', '찾을 문자열%')
         filter_value = convert_like_type_condition_value(operator, filter_value) 
-        #debug_print("Filter : #{filter_name}, Value : #{filter_value}, Operator : #{operator}")
+        # debug_print "Filter : #{filter_name}, Value : #{filter_value}, Operator : #{operator}"
         # 하나의 필드에 대한 조건 값을 conditions 배열에 추가한다. 
         conditions.push(filter_value) unless none_value_operator?(operator)
       end
@@ -199,7 +205,7 @@ module Hatio
         condition_str << get_condition_str(filter_name, operator)
         # like 타입이라면 검색 조건이라면 like문에 맞게 값에 %를 붙인다. ('%찾을 문자열%', '%찾을 문자열', '찾을 문자열%')
         filter_value = convert_like_type_condition_value(operator, filter_value) 
-        #debug_print("Filter : #{filter_name}, Value : #{filter_value}, Operator : #{operator}")
+        # debug_print "Filter : #{filter_name}, Value : #{filter_value}, Operator : #{operator}"
         # 하나의 필드에 대한 조건 값을 conditions 배열에 추가한다. 
         conditions.push(filter_value) unless none_value_operator?(operator)
       end
