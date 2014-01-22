@@ -7,7 +7,7 @@ admin = User.find_by_login('admin')
 User.current_user = admin
 
 # 바코드 품목 조회 (public/bundle/bar/view/InvoiceSearch.js에서 품목 (item_cd) 조회시 사용)
-BarItemsSelection = DiySelection.setup domain, SelectBarItems, {:script_type => 'DSL', :view_type => 'LIST'} do
+BarItemsSelection = DiySelection.setup domain, :SelectBarItems, {:script_type => 'DSL', :view_type => 'LIST'} do
   @count_logic = '100'
   @service_logic = <<-EOS
   tr_cd_eq = params["tr_cd"]
@@ -64,7 +64,7 @@ BarItemsSelection = DiySelection.setup domain, SelectBarItems, {:script_type => 
 end
 
 # 바코드 품목 조회 (public/bundle/bar/view/InvoiceSearch.js에서 거래명서서 번호 (bill_nb) 조회시 사용)
-BarBillNbsSelection = DiySelection.setup domain, SelectBarBillNbs, {:script_type => 'DSL', :view_type => 'LIST'} do
+BarBillNbsSelection = DiySelection.setup domain, :SelectBarBillNbs, {:script_type => 'DSL', :view_type => 'LIST'} do
   @count_logic = '100'
   @service_logic = <<-EOS
   query_params = params["_q"]
