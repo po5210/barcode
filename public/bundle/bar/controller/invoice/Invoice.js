@@ -27,6 +27,9 @@ Ext.define('Bar.controller.invoice.Invoice', {
 				paramschange : this.onParamsChange
 			},
 			'bar_invoice_list' : {
+				click_invoice : this.onPrintInvoice,
+				click_print : this.onPrintInvDetail,
+				click_reprint : this.onReprintInvDetail,
 				after_grid_updated : this.afterGridUpdated
 			},
 			'bar_invoice_form' : {
@@ -42,6 +45,77 @@ Ext.define('Bar.controller.invoice.Invoice', {
 				afterrender : this.onSearchRender
 			}
 		});
+	},
+
+	/****************************************************************
+	 ** 			여기는 label print 						   		**
+	 ****************************************************************/	
+	/**
+	 * Invoice 버튼 클릭시
+	 */
+	onPrintInvoice : function(view) {
+		var billNb = this.getSearchForm().getValues().bill_nb;
+		
+		if(billNb) {
+			// print command 정보를 서버에서 가져온다.
+			Ext.Ajax.request({
+				url : '/domains/' + login.current_domain_id + '/invoices/' + billNb + '/print_master.json',
+				method : 'GET',
+				success : function(response) {
+					var result = Ext.JSON.decode(response.responseText);
+					this.printLabel(billNb, result.print_command);
+				},
+				scope : this
+			});
+		} else {
+			HF.msg.notice(T('text.Empty data exist') + " : " + T('label.bill_nb'));
+		}
+	},
+	
+	/**
+	 * Print Agent에 인쇄 요청 
+	 */	
+	printLabel : function(billNb, command) {
+		var message = { "billId" : billNb, "msgType" : "PRINT", "msg" : command };
+		var reqMsg = HF.agent.buildRequestMsg(message);
+		HF.agent.request(reqMsg, function(response) {
+			if(response.success) {
+				// Print Y/N 서버에 업데이트 
+				this.updatePrinted(billNb);
+			} else {
+				// 메시지 뿌리기 
+				var errMsg = response.msg + ' (' + response.details + ')';
+				HF.failure(errMsg);
+			}
+		}, this);
+	},
+	
+	/**
+	 * 마스터 라벨 인쇄 플래그 올리기
+	 */
+	updatePrinted : function(billNb) {
+		Ext.Ajax.request({
+			url : '/domains/' + login.current_domain_id + '/invoices/' + billNb + '/update_to_printed.json',
+			method : 'GET',
+			success : function(response) {
+				HF.msg.notice(T('text.Success to Process'));
+			},
+			scope : this
+		});		
+	},
+	
+	/**
+	 * Print 버튼 클릭시
+	 */	
+	onPrintInvDetail : function(view) {
+		
+	},
+	
+	/**
+	 * Reprint 버튼 클릭시
+	 */	
+	onReprintInvDetail : function(view) {
+		
 	},
 
 	/****************************************************************

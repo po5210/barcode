@@ -83,6 +83,11 @@ Hatio::Application.routes.draw do
         get :export
         post :import
       end
+      member do
+        get :print_master
+        get :print_detail
+        get :update_to_printed
+      end
     end  
 
 	end

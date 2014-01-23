@@ -40,6 +40,6 @@ Ext.define('Bar.view.invoice.InvoiceList', {
 	
 	dockedItems: [ {
 		xtype: 'controlbar',
-		items : ['->', 'invoice', 'print', 'receive', 'reprint']
+		items : ['->', 'invoice', 'print', 'reprint']
 	} ]
 });

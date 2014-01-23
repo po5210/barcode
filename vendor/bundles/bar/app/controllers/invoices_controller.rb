@@ -44,16 +44,17 @@ class InvoicesController < ProcedureResourcesController
   # GET /domains/:domain_id/invoices/:id/show.json
   #  
   def show
-    tr_cd = params[:id]
+    bill_nb = params[:id]
     conn = ActiveRecord::Base.connection()
     sql = "SELECT 
-      TR_CD ID, TR_CD, TR_NM, ATTR_NM, TR_FG, REG_NB, PPL_NB, CEO_NM, BUSINESS, 
-      JONGMOK, ZIP, DIV_ADDR1, ADDR2, DDD, TEL, FAX, TR_NMK, ATTR_NMK, 
-      CEO_NMK, USE_YN, REG_ID, REG_DTM, MOD_ID, MOD_DTM
-    FROM
-      TRADE 
-    WHERE
-      TR_CD = #{conn.quote(tr_cd)}"
+          TO_CHAR(TO_DATE(I.BILL_DT, 'YYYYMMDD'), 'YYYY-MM-DD') BILL_DT,
+          TO_CHAR(TO_DATE(I.INVOICE_DATE, 'YYYYMMDD'), 'YYYY-MM-DD') INVOICE_DATE,
+          I.TR_CD, S.DESCRIPTION TR_NM, INVOICE_NO, PO_NO, TR_CD
+        FROM 
+          BAR_INVHEAD I, SUPPLIERS S 
+        WHERE 
+          I.TR_CD = S.NAME AND
+          I.BILL_NB = 'bill_nb'"
     collection = conn.select_all(sql)
     member = collection.empty? ? nil : collection[0]
     
@@ -99,8 +100,8 @@ class InvoicesController < ProcedureResourcesController
     end    
     
     respond_to do |format|
-      format.xml  { render :xml => {:success => true, :msg => "Success", :bill_nb => r_bill_nb} }
-      format.json { render :json => {:success => true, :msg => "Success", :bill_nb => r_bill_nb} }
+      format.xml  { render :xml => {:success => true, :msg => :Success, :bill_nb => r_bill_nb} }
+      format.json { render :json => {:success => true, :msg => :Success, :bill_nb => r_bill_nb} }
     end
   end
   
@@ -108,32 +109,20 @@ class InvoicesController < ProcedureResourcesController
   # GET /domains/:domain_id/invoices/:id/update.json
   #  
   def update
-    conn = ActiveRecord::Base.connection()    
+    conn = ActiveRecord::Base.connection()
+    bill_dt = parse_date(params[bill_dt]).strftime("%Y%m%d")
+    inv_date = parse_date(params[:invoice_date]).strftime("%Y%m%d")
+    
     sql = "UPDATE 
-        TRADE 
+        BAR_INVHEAD 
       SET
-        tr_nm = #{conn.quote(params[:tr_nm])}, 
-        attr_nm = #{conn.quote(params[:attr_nm])}, 
-        tr_fg = #{conn.quote(params[:tr_fg])},  
-        reg_nb = #{conn.quote(params[:reg_nb])}, 
-        ppl_nb = #{conn.quote(params[:ppl_nb])}, 
-        ceo_nm = #{conn.quote(params[:ceo_nm])},  
-        business = #{conn.quote(params[:business])}, 
-        jongmok = #{conn.quote(params[:jongmok])}, 
-        zip = #{conn.quote(params[:zip])}, 
-        div_addr1 = #{conn.quote(params[:div_addr1])}, 
-        addr2 = #{conn.quote(params[:addr2])},  
-        ddd = #{conn.quote(params[:ddd])}, 
-        tel = #{conn.quote(params[:tel])},  
-        fax = #{conn.quote(params[:fax])}, 
-        tr_nmk = #{conn.quote(params[:tr_nmk])},  
-        attr_nmk = #{conn.quote(params[:attr_nmk])},
-        ceo_nmk = #{conn.quote(params[:ceo_nmk])}, 
-        use_yn = #{conn.quote(params[:use_yn])}, 
-        mod_id = #{conn.quote(current_user.id)},  
-        mod_dtm = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+        INVOICE_DATE = '#{inv_date}', 
+        PO_NO = #{conn.quote(params[:po_no])}, 
+        INVOICE_NO = #{conn.quote(params[:invoice_no])}, 
+        MOD_ID = #{conn.quote(current_user.id)},  
+        MOD_DTM = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
       WHERE
-        TR_CD = #{conn.quote(params[:tr_cd])}"
+        BILL_NB = '#{params[:bill_nb]}'"
         
     begin
       conn.execute(sql)
@@ -142,28 +131,89 @@ class InvoicesController < ProcedureResourcesController
     end
     
     respond_to do |format|
-      format.xml  { render :xml => {:success => true, :msg => "Success"} }
-      format.json { render :json => {:success => true, :msg => "Success"} }
-    end    
+      format.xml  { render :xml => {:success => true, :msg => :Success} }
+      format.json { render :json => {:success => true, :msg => :Success} }
+    end
   end
   
   #
   # DELETE /domains/:domain_id/invoices/:id/destroy.json
   #
   def destroy
-    tr_cd = params[:id]
+    bill_nb = params[:id]
     conn = ActiveRecord::Base.connection()
     
     begin
-      conn.execute("DELETE FROM TRADE WHERE TR_CD = #{conn.quote(tr_cd)}")
+      conn.execute("DELETE FROM BAR_INVHEAD WHERE BILL_NB = '#{bill_nb}'")
+      conn.execute("DELETE FROM BAR_INVDETAIL WHERE BILL_NB = '#{bill_nb}'")
     rescue Exception => e
       raise Hatio::Exception::InvalidRequest, "ERROR : #{e.to_s}"
     end
     
     respond_to do |format|
-      format.xml  { render :xml => {:success => true, :msg => "Success"} }
-      format.json { render :json => {:success => true, :msg => "Success"} }
+      format.xml  { render :xml => {:success => true, :msg => :Success} }
+      format.json { render :json => {:success => true, :msg => :Success} }
+    end
+  end
+  
+  def print_master
+    bill_nb = params[:id]
+    cmd = 
+"^XA~TA000~JSN^LT0^MMT^MNW^MTT^PON^PMN^LH0,0^JMA^PR4,4^MD0^JUS^LRN^CI0^XZ
+^XA
+^FT516,57^A0R,62,55^FH\^FDHalla Visteon Climate Control(Thailand)Co.,Ltd.^FS
+^FT186,61^A0R,52,36^FH\^FDInvoice Date :^FS
+^FT186,285^A0R,42,31^FH\^FD${INVOICE_DATE}^FS
+^FT277,88^A0R,42,36^FH\^FDInvoice No :^FS
+^FT277,285^A0R,42,38^FH\^FD${INVOICE_NO}^FS
+^FT360,69^A0R,52,36^FH\^FDInternal No. :^FS
+^FT360,285^A0R,42,40^FH\^FD${BILL_NB}^FS
+^FT95,110^A0R,48,40^FH\^FDP/O No. :^FS
+^FT95,285^A0R,42,45^FH\^FD${PO_NO}^FS
+^BY260,260^FT445,800^BXI,4,200,0,0,1
+^FH\^FD${BARCODE}^FS
+^XZ"
+
+    sql = "SELECT INVOICE_DATE, INVOICE_DATE, INVOICE_NO, BILL_NB, PO_NO FROM BAR_INVHEAD WHERE BILL_NB = '#{bill_nb}'"
+    conn = ActiveRecord::Base.connection()
+    masters = conn.select_all(sql)
+    
+    if(masters && masters.size > 0)
+      master = masters[0]
+      cmd.gsub!("${INVOICE_DATE}", master["invoice_date"])
+      cmd.gsub!("${INVOICE_NO}", master["invoice_no"])
+      cmd.gsub!("${BILL_NB}", master["bill_nb"])
+      cmd.gsub!("${PO_NO}", master["po_no"])
+      cmd.gsub!("${BARCODE}", "#{master['bill_nb']}|#{master['invoice_no']}|#{master['po_no']}")
+      debug_print cmd
+      result = {:success => true, :id => bill_nb, :print_command => cmd}
+    else
+      result = {:success => false, :id => bill_nb}
+    end
+    
+    respond_to do |format|
+      format.xml  { render :xml => result }
+      format.json { render :json => result }
     end    
-  end  
+  end
+  
+  def print_detail
+  end
+  
+  def update_to_printed
+    bill_nb = params[:id]
+    
+    begin
+      conn = ActiveRecord::Base.connection()
+      conn.execute("UPDATE BAR_INVHEAD SET PRN_YN = '1' WHERE BILL_NB = '#{bill_nb}'")
+    rescue Exception => e
+      raise Hatio::Exception::InvalidRequest, "ERROR : #{e.to_s}"
+    end
+    
+    respond_to do |format|
+      format.xml  { render :xml => {:success => true, :msg => :Success} }
+      format.json { render :json => {:success => true, :msg => :Success} }
+    end    
+  end
   
 end

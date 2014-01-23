@@ -20,5 +20,7 @@ Ext.define('Bar.controller.BarController', {
 
 		this.control({
 		});
+		
+		HF.mixin('mixin.WsClient');
 	}
 });
