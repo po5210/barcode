@@ -69,6 +69,7 @@ Ext.define('Bar.view.invoice.InvoiceSearch', {
 			name : 'bill_qt', 
 			xtype : 'numberfield',
 			minValue : 0
+			default : 0
 		}				
 	]
 	

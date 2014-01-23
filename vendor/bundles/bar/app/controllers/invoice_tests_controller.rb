@@ -5,7 +5,7 @@ class InvoiceTestController < ProcedureResourcesController
   public
   
   #
-  # GET /domains/:domain_id/invoices.json
+  # GET /domains/:domain_id/invoice_tests.json
   #
   def index
     result = {}
