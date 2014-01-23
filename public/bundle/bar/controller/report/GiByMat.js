@@ -14,7 +14,7 @@ Ext.define('Bar.controller.report.GiByMat', {
 	views : ['Bar.view.report.GiByMat'],
 
 	refs: [ 
-		{ ref : 'BarGiByMat', selector : 'bar_gi_by_mat' }
+		{ ref : 'GiByMat', selector : 'bar_gi_by_mat' }
 	],
 
 	init: function() {

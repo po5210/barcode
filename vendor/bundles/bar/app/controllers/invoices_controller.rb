@@ -82,7 +82,7 @@ class InvoicesController < ProcedureResourcesController
         :arg_language     => 'en',
         :arg_dateformat   => 'YYYY-MM-DD',
         :p_bill_nb        => inv_params[:bill_nb],
-        :p_tr_cd          => inv_params[:tr_cd],
+        :p_tr_cd          => str_pad(inv_params[:tr_cd], ' ', 6, 'R'),
         :p_bill_dt        => bill_dt,
         :p_lot_no         => bill_dt,
         :p_print_yn       => '0',
@@ -174,17 +174,38 @@ class InvoicesController < ProcedureResourcesController
 ^FH\^FD${BARCODE}^FS
 ^XZ"
 
-    sql = "SELECT INVOICE_DATE, INVOICE_DATE, INVOICE_NO, BILL_NB, PO_NO FROM BAR_INVHEAD WHERE BILL_NB = '#{bill_nb}'"
+    sql = "SELECT INVOICE_DATE, CASE WHEN LENGTH(INVOICE_NO)>21 THEN SUBSTR(INVOICE_NO,1,21) ELSE INVOICE_NO END AS INVOICE_NO, BILL_NB, SUBSTR(BILL_NB, 8,8) BILL_DATE, CASE WHEN LENGTH(PO_NO)>20 THEN SUBSTR(PO_NO,1,21) ELSE INVOICE_NO END AS PO_NO FROM BAR_INVHEAD WHERE BILL_NB = '#{bill_nb}'"
     conn = ActiveRecord::Base.connection()
     masters = conn.select_all(sql)
     
+    if(masters && masters.size > 0)
+      	master = masters[0]
+    	barcode = "#{bill_nb}|#{master['invoice_no']}|#{master['invoice_date']}|#{master['po_no']}|#{master['bill_date']}|"
+    	debug_print barcode
+      result = {:success => true, :id => bill_nb, :print_command => cmd}
+    else
+      result = {:success => false, :id => bill_nb}
+    end
+    
+    
+    sql = "SELECT ITEM_SQ, ITEM_CD, LOT_QT, PRICE FROM BAR_INVDETAIL WHERE BILL_NB = '#{bill_nb}'"
+    conn = ActiveRecord::Base.connection()
+    details = conn.select_all(sql)
+    
+	details.each do |detail|
+		barcode << "#{detail['item_sq']}|#{detail['item_cd']}|#{detail['lot_qt']}|#{detail['price']}|"
+	end
+	
+	barcode = str_pad(barcode, ' ', 530, 'R')
+	debug_print "[#{barcode.size}][#{barcode}]"
+        
     if(masters && masters.size > 0)
       master = masters[0]
       cmd.gsub!("${INVOICE_DATE}", master["invoice_date"])
       cmd.gsub!("${INVOICE_NO}", master["invoice_no"])
       cmd.gsub!("${BILL_NB}", master["bill_nb"])
       cmd.gsub!("${PO_NO}", master["po_no"])
-      cmd.gsub!("${BARCODE}", "#{master['bill_nb']}|#{master['invoice_no']}|#{master['po_no']}")
+      cmd.gsub!("${BARCODE}", barcode)
       debug_print cmd
       result = {:success => true, :id => bill_nb, :print_command => cmd}
     else
@@ -197,7 +218,100 @@ class InvoicesController < ProcedureResourcesController
     end    
   end
   
+  
+  # 라벨 프린트 발행
+  #'0. Part No : 19                 '1 Part Desc :           '2 qty (Lot Size)               '3 Lot No                   
+  # '4 SerialNo						'5 Supply Code        '6 Supply Name               '7 Project Type
+  #'8 print date                      9 Location No      		'10 : Label Part No           11 : Label Part Desc                
+  #12 : Label Qty               ' 13 : Lot                      14 : SerialNo
   def print_detail
+  	bill_nb = params[:id]
+    cmd = 
+"^XA
+^FT516,57^A0R,62,55^FH\^FDHalla Visteon Climate Control(Thailand)Co.,Ltd.^FS
+^FT440,78^A0R,42,36^FH\^FDP/N :^FS
+^FT430,177^A0R,72,121^FH\^FD${INVOICE_DATE}^FS
+^FT381,198^A0R,52,81^FH\^FD${INVOICE_DATE17}^FS
+^FT318,78^A0R,42,36^FH\^FDDesc :^FS
+^FT318,201^A0R,42,55^FH\^FD${INVOICE_DATE1}^FS
+^FT256,78^A0R,42,36^FH\^FDQ`ty :^FS
+^FT256,190^A0R,42,55^FH\^FD${INVOICE_DATE2}^FS
+^FT256,539^A0R,42,36^FH\^FDLot :^FS
+^FT256,626^A0R,42,48^FH\^FD${INVOICE_DATE3}^FS
+^FT256,841^A0R,42,36^FH\^FDSerial :^FS
+^FT256,963^A0R,42,48^FH\^FD${INVOICE_DATE4}^FS
+^FT188,285^A0R,42,36^FH\^FDLocation :^FS
+^FT188,454^A0R,42,40^FH\^FD${INVOICE_DATE9}^FS
+^FT188,757^A0R,42,40^FH\^FDRouting :^FS
+^FT187,938^A0R,42,48^FH\^FD${INVOICE_DATE7}^FS
+^FT128,283^A0R,42,40^FH\^FDSupplier  :^FS
+^FT128,486^A0R,42,48^FH\^FD${INVOICE_DATE?}^FS
+^FT62,285^A0R,42,40^FH\^FDInternal No. :^FS
+^FT62,525^A0R,42,55^FH\^FD${INVOICE_DATE15}^FS
+^FT166,1340^A0N,28,26^FH\^FDP/N :^FS
+^FT229,1340^A0N,33,28^FH\^FD${INVOICE_DATE10}^FS
+^FT166,1300^A0N,28,26^FH\^FDSupplier Code :^FS
+^FT353,1300^A0N,33,28^FH\^FD${INVOICE_DATE16}^FS
+^FT166,1375^A0N,28,26^FH\^FDDesc. :^FS
+^FT253,1375^A0N,33,28^FH\^FD${INVOICE_DATE11}^FS
+^FT166,1410^A0N,28,26^FH\^FDQty :^FS
+^FT225,1410^A0N,26,28^FH\^FD${INVOICE_DATE12}^FS
+^FT359,1445^A0N,28,26^FH\^FDSerial :^FS
+^FT451,1445^A0N,26,28^FH\^FD${INVOICE_DATE14}^FS
+^FT166,1445^A0N,28,26^FH\^FDLot :^FS
+^FT229,1445^A0N,26,28^FH\^FD${INVOICE_DATE13}^FS
+^BY110,110^FT147,1335^BXI,4,200,0,0,1
+^FH\^FD" & argBarcode & "^FS
+^BY176,176^FT213,102^BXI,6,200,0,0,1
+^FH\^FD" & argBarcode & "^FS
+^XZ"
+
+    sql = "SELECT SUBSTR(BILL_NB,1,7) ||'-'|| SUBSTR(BILL_NB,8,8) ||'-'|| SUBSTR(BILL_NB,16) BILL_NB, SUBSTR(BILL_NB, 8,8) BILL_DATE, 
+                           INVOICE_DATE, CASE WHEN LENGTH(INVOICE_NO)>21 THEN SUBSTR(INVOICE_NO,1,21) ELSE INVOICE_NO END AS INVOICE_NO, 
+                           CASE WHEN LENGTH(PO_NO)>20 THEN SUBSTR(PO_NO,1,21) ELSE INVOICE_NO END AS PO_NO 
+                 FROM BAR_INVHEAD 
+               WHERE BILL_NB = '#{bill_nb}'"
+    conn = ActiveRecord::Base.connection()
+    masters = conn.select_all(sql)
+    
+    if(masters && masters.size > 0)
+      	master = masters[0]
+    	barcode = "#{bill_nb}|#{master['invoice_no']}|#{master['invoice_date']}|#{master['po_no']}|#{master['bill_date']}|"
+    	debug_print barcode
+      result = {:success => true, :id => bill_nb, :print_command => cmd}
+    else
+      result = {:success => false, :id => bill_nb}
+    end
+    
+    
+    sql = "SELECT ITEM_SQ, ITEM_CD, LOT_QT, PRICE FROM BAR_INVDETAIL WHERE BILL_NB = '#{bill_nb}'"
+    conn = ActiveRecord::Base.connection()
+    details = conn.select_all(sql)
+    
+	details.each do |detail|
+		barcode << "#{detail['item_sq']}|#{detail['item_cd']}|#{detail['lot_qt']}|#{detail['price']}|"
+	end
+	
+	barcode = str_pad(barcode, ' ', 530, 'R')
+	debug_print "[#{barcode.size}][#{barcode}]"
+        
+    if(masters && masters.size > 0)
+      master = masters[0]
+      cmd.gsub!("${INVOICE_DATE}", master["invoice_date"])
+      cmd.gsub!("${INVOICE_NO}", master["invoice_no"])
+      cmd.gsub!("${BILL_NB}", master["bill_nb"])
+      cmd.gsub!("${PO_NO}", master["po_no"])
+      cmd.gsub!("${BARCODE}", barcode)
+      #debug_print cmd
+      result = {:success => true, :id => bill_nb, :print_command => cmd}
+    else
+      result = {:success => false, :id => bill_nb}
+    end
+    
+    respond_to do |format|
+      format.xml  { render :xml => result }
+      format.json { render :json => result }
+    end    
   end
   
   def update_to_printed
@@ -215,5 +329,27 @@ class InvoicesController < ProcedureResourcesController
       format.json { render :json => {:success => true, :msg => :Success} }
     end    
   end
+  
+  
+  private 
+  
+      #
+      # integer value를 자리수를 size만큼 0를 붙여서 리턴한다.
+      #
+      def str_pad(value, fillChar, size, dirValue)
+        val_str = value.to_s
+        val_size = val_str.size
+        if(val_size >= size)
+          return val_str
+        else
+          if(dirValue == 'L')
+          	1.upto(size - val_size) { |idx| val_str = (fillChar + val_str) }
+          else
+            1.upto(size - val_size) { |idx| val_str = (val_str + fillChar) }
+          end
+          return val_str
+        end
+      end
+      
   
 end

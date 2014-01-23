@@ -108,7 +108,22 @@ Ext.define('Bar.controller.invoice.Invoice', {
 	 * Print 버튼 클릭시
 	 */	
 	onPrintInvDetail : function(view) {
+		var billNb = this.getSearchForm().getValues().bill_nb;
 		
+		if(billNb) {
+			// print command 정보를 서버에서 가져온다.
+			Ext.Ajax.request({
+				url : '/domains/' + login.current_domain_id + '/invoices/' + billNb + '/print_detail.json',
+				method : 'GET',
+				success : function(response) {
+					var result = Ext.JSON.decode(response.responseText);
+					this.printLabel(billNb, result.print_command);
+				},
+				scope : this
+			});
+		} else {
+			HF.msg.notice(T('text.Empty data exist') + " : " + T('label.bill_nb'));
+		}
 	},
 	
 	/**

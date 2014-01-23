@@ -6,6 +6,7 @@ Ext.define('Bar.view.report.BarGiByMatSearch', {
 	
 	items : [
 		{ xtype: 'daterange', fieldLabel: T('label.date'), name: 'date' },
+/*		
 		{ 
 			fieldLabel : T('label.part_no'), 
 			name : 'item_cd',
@@ -36,6 +37,7 @@ Ext.define('Bar.view.report.BarGiByMatSearch', {
 			displayField: 'name', 
 			valueField: 'loc_cd'
 		}
+		*/
 	]
 	
 });

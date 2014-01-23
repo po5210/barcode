@@ -47,7 +47,7 @@ module Hatio
       
       # 필수 파라미터 체크 
       def check_required_param(params, name)
-        raise StandardError, "Parameter #{name} is required!" if(!params.key?(name.to_s) || params[name.to_s].blank?)
+        raise Hatio::Exception::InvalidRequest, "Parameter #{name} is required!" if(!params.key?(name.to_s) || params[name.to_s].blank?)
       end
          
       # 필수 파라미터 리스트 체크 
@@ -69,6 +69,15 @@ module Hatio
       # server configuration에서 지정된 포맷대로 date_str을 파싱하여 date 객체를 리턴 
       #
       def parse_date(date_str)
+        
+        # if(/\//.match(date_str))
+        #   return Date.strptime(date_str, '%m/%d/%Y')
+        # elsif(/-/.match(date_str))
+        #   return Date.strptime(date_str, '%Y-%m-%d')
+        # else
+        #     raise 'invalid date #{work_date}'        
+        # end
+                
         begin
           return Date.strptime(date_str, GlobalConfig.default_date_format)
         rescue ::Exception => e
@@ -107,6 +116,20 @@ module Hatio
       #
       def to_std_time_str(time_str)
         return parse_time(time_str).to_s
+      end
+      
+      #
+      # integer value를 자리수를 size만큼 0를 붙여서 리턴한다.
+      #
+      def int_to_str(value, size)
+        val_str = value.to_s
+        val_size = val_str.size
+        if(val_size >= size)
+          return val_str
+        else
+          1.upto(size - val_size) { |idx| val_str = ("0" + val_str) }
+          return val_str
+        end
       end
       
     end
