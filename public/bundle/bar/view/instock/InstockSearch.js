@@ -6,24 +6,39 @@ Ext.define('Bar.view.instock.InstockSearch', {
 		
 	items : [
 		{ 
-			name : 'date', 
+			name : 'bill_dt', 
 			fieldLabel : T('label.date'), 
 			xtype : 'datefield', 
 			format : T('format.date'), 
 			submitFormat : T('format.submitDate') 
 		},
 		{ 
-			fieldLabel : T('label.invoice_no'), 
-			name : 'invoice_no', 
+			fieldLabel : T('label.bill_nb'), 
+			name : 'bill_nb', 
 			xtype : 'textfield'
 		},		
 		{ 
 			fieldLabel : T('label.supplier'), 
-			name : 'supplier', 
-			xtype : 'entitysearchcombo', 
-			storeClass : 'Bar.store.Supplier', 
-			valueField : 'name' 
-		}
+			name : 'tr_cd', 
+			xtype : 'textfield' 
+		},
+		{ 
+			fieldLabel : T('label.invoice_date'), 
+			name : 'invoice_date', 
+			xtype : 'datefield',
+			format : T('format.date'), 
+			submitFormat : T('format.submitDate') 			
+		},
+		{ 
+			fieldLabel : T('label.invoice_no'), 
+			name : 'invoice_no', 
+			xtype : 'textfield'
+		},
+		{ 
+			fieldLabel : T('label.po_no'), 
+			name : 'po_no', 
+			xtype : 'textfield'
+		}		
 	]
 	
 });

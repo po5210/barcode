@@ -33,9 +33,11 @@ Ext.define('Bar.view.instock.Instock', {
 				margin : '10 50 5 0'
 			}, {
 				xtype : 'textfield',
-				name : 'scan_all',
+				name : 'scan_master',
+				itemId : 'scan_master',
 				margin : '0 0 5 0',
-				flex : 1
+				flex : 1,
+				enableKeyEvents : true
 			} ]
 		});
 				
@@ -58,9 +60,11 @@ Ext.define('Bar.view.instock.Instock', {
 				margin : '10 80 5 0'
 			}, {
 				xtype : 'textfield',
-				name : 'scan_lot',
+				name : 'scan_detail',
+				itemId : 'scan_detail',
 				margin : '0 0 5 0',
-				flex : 1
+				flex : 1,
+				enableKeyEvents : true
 			} ]
 		});
 					
