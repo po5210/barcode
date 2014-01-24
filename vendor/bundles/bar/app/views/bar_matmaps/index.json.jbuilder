@@ -6,6 +6,18 @@ json.items do |json|
 			json.name bar_matmap.supplier ? bar_matmap.supplier.name : ''
 			json.desc bar_matmap.supplier ? bar_matmap.supplier.description : ''
 		end
+		
+		json.bar_locgrp do
+			json.id bar_matmap.bar_locgrp_id
+			json.name bar_matmap.bar_locgrp ? bar_matmap.bar_locgrp.name : ''
+			json.desc bar_matmap.bar_locgrp ? bar_matmap.bar_locgrp.description : ''
+		end
+
+		json.bar_locmap do
+			json.id bar_matmap.bar_locmap_id
+			json.name bar_matmap.bar_locmap ? bar_matmap.bar_locmap.name : ''
+			json.desc bar_matmap.bar_locmap ? bar_matmap.bar_locmap.description : ''
+		end
 
 		end
 end

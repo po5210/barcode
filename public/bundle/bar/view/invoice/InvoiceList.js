@@ -10,6 +10,7 @@ Ext.define('Bar.view.invoice.InvoiceList', {
 			{ name : 'item_sq', type : 'integer' },
 			{ name : 'item_cd', type : 'string'},
 			{ name : 'item_nm', type : 'string'},
+			{ name : 'item_tp', type : 'string'},
 			{ name : 'lot_qt', type : 'integer'},
 			{ name : 'bill_qt', type : 'integer' },
 			{ name : 'lot_size', type : 'integer' },

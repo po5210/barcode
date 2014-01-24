@@ -117,7 +117,7 @@ Ext.define('Bar.controller.invoice.Invoice', {
 				method : 'GET',
 				success : function(response) {
 					var result = Ext.JSON.decode(response.responseText);
-					this.printLabel(billNb, result.print_command);
+					this.printLabels(billNb, result.commands, 0);
 				},
 				scope : this
 			});
@@ -126,6 +126,27 @@ Ext.define('Bar.controller.invoice.Invoice', {
 		}
 	},
 	
+	/**
+	 * Print Agent에 인쇄 요청 
+	 */	
+	printLabels : function(billNb, commands, idx) {		
+		var message = { "billId" : billNb + idx, "msgType" : "PRINT", "msg" : commands[idx] };
+		var reqMsg = HF.agent.buildRequestMsg(message);
+		
+		HF.agent.request(reqMsg, function(response) {
+			if(response.success) {
+				// 재귀호출
+				if(commands.length > idx) {
+					this.printLabels(billNb, commands, idx + 1); 
+				}
+			} else {
+				// 메시지 뿌리기 
+				var errMsg = response.msg + ' (' + response.details + ')';
+				HF.failure(errMsg);
+			}
+		}, this);
+	},
+		
 	/**
 	 * Reprint 버튼 클릭시
 	 */	
@@ -330,6 +351,7 @@ Ext.define('Bar.controller.invoice.Invoice', {
 		gridData["item_nm"] = itemDescText.getValue();
 		gridData["lot_qt"] = Math.ceil(gridData.bill_qt / gridData.lot_size);
 		gridData["price"] = gridData.bill_qt * gridData.unit_price;
+		gridData["cust_part_no"] = this.getPartInfo(gridData);
 		
 		// grid store에 row 하나 추가.
 		var gridView = this.getGridView();
@@ -365,6 +387,21 @@ Ext.define('Bar.controller.invoice.Invoice', {
 		}
 		
 		return true;
+	},
+	
+	/**
+	 * PART_NO, PART_NAME 정보 불러오기
+	 */
+	getPartInfo : function(itemCd) {
+		Ext.Ajax.request({
+				url : '/domains/' + login.current_domain_id + '/invoices/' + itemCd + '/get_part_info.json',
+				method : 'GET',
+				success : function(response) {
+					var result = Ext.JSON.decode(response.responseText);
+					return result.cust_part_no;
+				},
+				scope : this
+			});
 	},
 	
 	/****************************************************************

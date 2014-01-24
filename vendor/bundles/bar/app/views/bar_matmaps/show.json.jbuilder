@@ -3,3 +3,13 @@ json.supplier do
 	json.id @bar_matmap.supplier_id
 	json.name @bar_matmap.supplier ? @bar_matmap.supplier.name : ''
 end			
+
+json.bar_locgrp do
+	json.id @bar_matmap.bar_locgrp_id
+	json.name @bar_matmap.bar_locgrp ? @bar_matmap.bar_locgrp.name : ''
+end		
+
+json.bar_locmap do
+	json.id @bar_matmap.bar_locmap_id
+	json.name @bar_matmap.bar_locmap ? @bar_matmap.bar_locmap.name : ''
+end	

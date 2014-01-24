@@ -11,10 +11,10 @@ Ext.define('Bar.view.bar_locmap.BarLocmapForm', {
 	items : [
 		{ name : 'id', fieldLabel : T('label.id'), hidden : true },
 		{ name : 'domain_id', value : login.current_domain_id, hidden : true },
-		{ fieldLabel : T('title.bar_locgrp'), name : 'bar_locgrp', xtype : 'entityfield', storeClass : 'Bar.store.BarLocgrp' },
-		{ name : 'name', fieldLabel : T('label.code'), allowBlank : false, maxLength : 64 },
-		{ name : 'description', fieldLabel : T('label.name'), maxLength : 255 },		
-		{ fieldLabel : T('label.prod_line_fg'), name : 'prod_line_fg', xtype : 'codecombo', commonCode : 'LOC_TYPE', displayField : 'description' },		
+		{ fieldLabel : T('title.bar_locgrp'), name : 'bar_locgrp', xtype : 'entityfield', storeClass : 'Bar.store.BarLocgrp', allowBlank : false },
+		{ name : 'name', fieldLabel : T('label.code'), allowBlank : false, maxLength : 64, allowBlank : false },
+		{ name : 'description', fieldLabel : T('label.name'), maxLength : 255 , allowBlank : false},		
+		{ fieldLabel : T('label.prod_line_fg'), name : 'prod_line_fg', xtype : 'codecombo', commonCode : 'LOC_TYPE', displayField : 'description' , allowBlank : false},		
 		{ fieldLabel : T('label.use_yn'), name : 'use_yn', xtype : 'codecombo', commonCode : 'USE_YN', displayField : 'description' },	
 		{ xtype : 'datefield', name : 'created_at', disabled : true, fieldLabel : T('label.created_at'), format : T('format.datetime') },		
 		{ xtype : 'datefield', name : 'updated_at', disabled : true, fieldLabel : T('label.updated_at'), format : T('format.datetime') }

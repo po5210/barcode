@@ -12,9 +12,11 @@ Ext.define('Bar.view.bar_matmap.BarMatmapForm', {
 		{ name : 'id', fieldLabel : T('label.id'), hidden : true },
 		{ name : 'domain_id', value : login.current_domain_id, hidden : true },
 		{ name : 'name', fieldLabel : T('label.code'), allowBlank : false, maxLength : 64 },
-		{ name : 'description', fieldLabel : T('label.name'), maxLength : 255 },
-		{ fieldLabel : T('title.supplier'), name : 'supplier', xtype : 'entityfield', storeClass : 'Bar.store.Supplier' },
-		{ name : 'box_qty', fieldLabel : T('label.box_qty'), xtype : 'numberfield' },
+		{ name : 'description', fieldLabel : T('label.name'), maxLength : 255 , allowBlank : false},
+		{ fieldLabel : T('title.supplier'), name : 'supplier', xtype : 'entityfield', storeClass : 'Bar.store.Supplier', allowBlank : false },
+		{ name : 'box_qty', fieldLabel : T('label.box_qty'), xtype : 'numberfield', allowBlank : false },
+		{ fieldLabel : T('title.bar_locgrp'), name : 'bar_locgrp', xtype : 'entityfield', storeClass : 'Bar.store.BarLocgrp', allowBlank : false },
+		{ fieldLabel : T('title.bar_locmap'), name : 'bar_locmap', xtype : 'entityfield', storeClass : 'Bar.store.BarLocmap' , allowBlank : false},
 		{ xtype : 'datefield', name : 'created_at', disabled : true, fieldLabel : T('label.created_at'), format : T('format.datetime') },
 		{ xtype : 'datefield', name : 'updated_at', disabled : true, fieldLabel : T('label.updated_at'), format : T('format.datetime') }
 /*		
@@ -44,8 +46,7 @@ Ext.define('Bar.view.bar_matmap.BarMatmapForm', {
 		{ name : 'pallet_layer', fieldLabel : T('label.pallet_layer'), xtype : 'numberfield' },
 		{ name : 'pallet_bqty', fieldLabel : T('label.pallet_bqty'), xtype : 'numberfield' },
 		{ name : 'pallet_qty', fieldLabel : T('label.pallet_qty'), xtype : 'numberfield' },
-		{ fieldLabel : T('title.bar_locgrp'), name : 'bar_locgrp', xtype : 'entityfield', storeClass : 'Bar.store.BarLocgrp' },
-		{ fieldLabel : T('title.bar_locmap'), name : 'bar_locmap', xtype : 'entityfield', storeClass : 'Bar.store.BarLocmap' },
+		
 		{ name : 'ckdbox_l', fieldLabel : T('label.ckdbox_l'), xtype : 'numberfield' },
 		{ name : 'ckdbox_w', fieldLabel : T('label.ckdbox_w'), xtype : 'numberfield' },
 		{ name : 'ckdbox_h', fieldLabel : T('label.ckdbox_h'), xtype : 'numberfield' },
