@@ -245,6 +245,8 @@ table.x-datepicker-inner .x-datepicker-selected a{background-color:transparent !
 .infoFields1Column .x-panel-body-default,.infoFields2Column .x-panel-body-default,.infoFields3Column .x-panel-body-default{border:1px solid #bfd6b1;background-color:#ecf9e4}
 .infoFields1Column .x-form-item-label,.infoFields2Column .x-form-item-label,.infoFields3Column .x-form-item-label{background:url(<%= asset_path 'ops/dotGreen.png' %>) 7px 50% no-repeat;padding:4px 0 4px 15px;font-size:14px;color:#2b6574}
 .infoFields1Column .x-form-display-field,.infoFields2Column .x-form-display-field,.infoFields3Column .x-form-display-field{padding:4px 0 3px 0;font-size:15px;color:#000 !important}
+.infoFields1Column .x-form-text,.infoFields2Column .x-form-text,.infoFields3Column .x-form-text,.infoFields1Column textarea.x-form-field,.infoFields2Column textarea.x-form-field,.infoFields3Column textarea.x-form-field{border:none;background:none transparent;}
+.infoFields1Column *,.infoFields2Column *,.infoFields3Column *{opacity:1 !important;}
 
 .infoFields1Column .x-form-item-label{min-width:70px !important;width:20%}
 .infoFields1Column table{width:100%;border-top:1px solid #fff;border-bottom:1px solid #c8e6b6}
@@ -271,6 +273,7 @@ table.x-datepicker-inner .x-datepicker-selected a{background-color:transparent !
 .listSearch .x-field-label-cell{background:url(<%= asset_path 'std/dotGreen.png' %>) 4px 50% no-repeat;text-indent:10px;vertical-align:middle}
 .listSearch .x-btn:first-child{background:url(<%= asset_path 'std/iconListSearch.png' %>) 50% 2px no-repeat transparent;border:none}
 .listSearch .x-btn:last-child{background:url(<%= asset_path 'std/iconListSearch.png' %>) 50% -23px no-repeat transparent;border:none;left:25px !important}
+
 
 /*check header style*/
 .x-grid-cell-checkcolumn .x-grid-cell-inner{padding-top: 4px;padding-bottom: 2px;line-height: 14px;}
@@ -352,3 +355,12 @@ table.x-datepicker-inner .x-datepicker-selected a{background-color:transparent !
 /*file upload*/
 .new_attachment{background:url(<%= asset_path 'std/iconFileUpload.png' %>) no-repeat;line-height:25px;text-indent:26px;height:25px}
 .new_attachment label{margin-right:5px;font-weight:bold}
+
+/* for ie 11 style fix */
+.x-nlg .x-toolbar-default{background:none !important;}
+.x-nlg .titlebar{background:url(<%= asset_path 'std/bgTitleBar.png' %>) repeat-x !important;}
+.x-nlg .navBar .x-toolbar{background:url(<%= asset_path 'std/bgTitle.png' %>) 100% 50% no-repeat #7db019 !important;}
+.x-nlg .x-tab-default-top{background:none #f4f4f4 !important;}
+.x-nlg .x-tab-top-active{background:none #fff !important;}
+.x-nlg .x-panel-header-default-top{background:none !important;}
+.x-nlg .x-datepicker-footer, .x-nlg .x-monthpicker-buttons{background:none !important;}
