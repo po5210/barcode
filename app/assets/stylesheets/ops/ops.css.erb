@@ -107,6 +107,8 @@ body{background:url(<%= asset_path 'ops/bgBody.png' %>) repeat-x #f4f4f4 !import
 .infoFields1Column .x-panel-body-default,.infoFields2Column .x-panel-body-default,.infoFields3Column .x-panel-body-default{border:1px solid #bfd6b1;background-color:#ecf9e4}
 .infoFields1Column .x-form-item-label,.infoFields2Column .x-form-item-label,.infoFields3Column .x-form-item-label{background:url(<%= asset_path 'ops/dotGreen.png' %>) 7px 50% no-repeat;padding:4px 0 4px 15px;font-size:14px;color:#2b6574}
 .infoFields1Column .x-form-display-field,.infoFields2Column .x-form-display-field,.infoFields3Column .x-form-display-field{padding:4px 0 3px 0;font-size:15px;color:#000 !important}
+.infoFields1Column .x-form-text,.infoFields2Column .x-form-text,.infoFields3Column .x-form-text,.infoFields1Column textarea.x-form-field,.infoFields2Column textarea.x-form-field,.infoFields3Column textarea.x-form-field{border:none;background:none transparent;}
+.infoFields1Column *,.infoFields2Column *,.infoFields3Column *{opacity:1 !important;}
 
 .infoFields1Column .x-form-item-label{min-width:70px !important;width:20%}
 .infoFields1Column table{width:100%;border-top:1px solid #fff;border-bottom:1px solid #c8e6b6}
@@ -281,3 +283,7 @@ body{background:url(<%= asset_path 'ops/bgBody.png' %>) repeat-x #f4f4f4 !import
 .touch_pad_popup .x-btn-default-small-over .x-btn-inner{font-size:24px;color:#fff;font-weight:bold;text-shadow:1px 1px #20395b;}
 .touch_pad_popup .x-form-text{font-size:24;}
 .touch_pad_popup .x-btn-pressed{background-image:linear-gradient(#20395b 5%,#274369 6%,#497cc0 95%,#30588c 100%,#37649f)}
+
+/* for ie 11 style fix */
+.x-nlg .x-toolbar-default{background:none !important;}
+.x-nlg #optionbar{background:url(<%= asset_path 'ops/bgTitleBar.png' %>) repeat-x #f3f3f3 !important}
