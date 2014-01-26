@@ -77,10 +77,10 @@ class InvoicesController < ProcedureResourcesController
     
     if(part_info_datas && part_info_datas.size > 0)
       part_info_data = part_info_datas[0]
-      part_name = "#{master['invoice_no']}"
+      part_name = "#{part_info_data['part_no']}"
     
       debug_print "part_name[{part_name}]"
-      result = {:success => true, :id => item_cd, :part_info => cmd}
+      result = {:success => true, :id => item_cd, :part_info => part_name}
     else
       result = {:success => false, :id => item_cd}
     end

@@ -25,7 +25,8 @@ Ext.define('Bar.view.invoice.InvoiceSearch', {
 			xtype : 'entitycombo',
 			customSelectionUrl : '/domains/' + login.current_domain_id + '/diy_selections/SelectBarBillNbs/query.json',
 			associationField : ['bill_dt', 'tr_cd'],
-			editable : true
+			//editable : true
+			readOnly : true
 		},
 		{ 
 			fieldLabel : T('label.invoice_no'), 
@@ -69,6 +70,11 @@ Ext.define('Bar.view.invoice.InvoiceSearch', {
 			name : 'bill_qt', 
 			xtype : 'numberfield',
 			minValue : 0
+		}, 
+		{ 
+			name : 'cus_part_no', 
+			xtype : 'textfield',
+			hidden : false
 		}				
 	]
 	

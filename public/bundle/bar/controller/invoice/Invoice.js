@@ -241,8 +241,16 @@ Ext.define('Bar.controller.invoice.Invoice', {
 		// item 필드가 변경되었을 경우 Search View의 Lot Size 필드를 변경
 		itemNameCombo.on('select', function(me, records) {
 			var record = records[0];
-			var lotSizeField = view.down(' textfield[name=lot_size]');
-			lotSizeField.setValue(record.raw.default_qty);
+			if(record.raw.default_qty =="0"){
+				HF.msg.notice(T('text.INF101'));
+				itemField.resetValue();
+				return false;				
+			}else{
+				var lotSizeField = view.down(' textfield[name=lot_size]');
+				lotSizeField.setValue(record.raw.default_qty);
+				var cusPartNoField = view.down(' textfield[name=cus_part_no]');
+				cusPartNoField.setValue(record.raw.cus_part_name);
+			}
 		});		
 	},
 
@@ -351,7 +359,7 @@ Ext.define('Bar.controller.invoice.Invoice', {
 		gridData["item_nm"] = itemDescText.getValue();
 		gridData["lot_qt"] = Math.ceil(gridData.bill_qt / gridData.lot_size);
 		gridData["price"] = gridData.bill_qt * gridData.unit_price;
-		gridData["cust_part_no"] = this.getPartInfo(gridData);
+		gridData["cust_part_no"] = gridData.cus_part_no;
 		
 		// grid store에 row 하나 추가.
 		var gridView = this.getGridView();
