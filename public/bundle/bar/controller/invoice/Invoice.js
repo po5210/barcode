@@ -367,9 +367,11 @@ Ext.define('Bar.controller.invoice.Invoice', {
 		
 		// Search Form에서 Item, Lot Size, Unit Price, Bill Qty값을 리셋한다.
 		itemObj.resetValue();
-		searchView.down(' textfield[name=lot_size]').setValue(0);
+		searchView.down(' textfield[name=cus_part_no]').setValue('');
+		searchView.down(' textfield[name=lot_size]').setValue(0);		
 		searchView.down(' numberfield[name=unit_price]').setValue(0);
 		searchView.down(' numberfield[name=bill_qt]').setValue(0);
+		
 	},
 	
 	/**

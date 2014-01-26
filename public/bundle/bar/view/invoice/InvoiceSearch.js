@@ -74,7 +74,7 @@ Ext.define('Bar.view.invoice.InvoiceSearch', {
 		{ 
 			name : 'cus_part_no', 
 			xtype : 'textfield',
-			hidden : false
+			hidden : true
 		}				
 	]
 	
