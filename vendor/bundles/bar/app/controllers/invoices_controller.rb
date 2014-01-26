@@ -259,7 +259,7 @@ class InvoicesController < ProcedureResourcesController
   def print_detail
   	bill_nb = params[:id]
   	  	
-    cmd = 
+    labelPrint = 
 "^XA
 ^FT516,57^A0R,62,55^FH\^FDHalla Visteon Climate Control(Beijing)Co.,Ltd.^FS
 ^FT440,78^A0R,42,36^FH\^FDP/N :^FS
@@ -276,14 +276,14 @@ class InvoicesController < ProcedureResourcesController
 ^FT188,285^A0R,42,36^FH\^FDLocation :^FS
 ^FT188,454^A0R,42,40^FH\^FD${BAR_LOCMAP_ID}^FS
 ^FT188,757^A0R,42,40^FH\^FDRouting :^FS
-^FT187,938^A0R,42,48^FH\^FD${ITEM_TYPE}^FS
+^FT187,938^A0R,42,48^FH\^FD${ROUTING}^FS
 ^FT128,283^A0R,42,40^FH\^FDSupplier  :^FS
 ^FT128,486^A0R,42,48^FH\^FD${TR_CD} - ${TR_NAME}^FS
 ^FT62,285^A0R,42,40^FH\^FDInternal No. :^FS
-^FT62,525^A0R,42,55^FH\^FD${BILL_NO_DASH}^FS
+^FT62,525^A0R,42,55^FH\^FD${BILL_NB_DASH}^FS
 ^FT166,1340^A0N,28,26^FH\^FDP/N :^FS
 ^FT229,1340^A0N,33,28^FH\^FD${ITEM_CD}^FS
-^FT166,1300^A0N,28,26^FH\^FD{TAIL_TITLE} Code :^FS
+^FT166,1300^A0N,28,26^FH\^FD${TAIL_TITLE} Code :^FS
 ^FT353,1300^A0N,33,28^FH\^FD${BILL_TR_CD}^FS
 ^FT166,1375^A0N,28,26^FH\^FDDesc. :^FS
 ^FT253,1375^A0N,33,28^FH\^FD${TR_NAME}^FS
@@ -300,11 +300,11 @@ class InvoicesController < ProcedureResourcesController
 ^XZ"
 
     sql = "SELECT A.BILL_NB, SUBSTR(A.BILL_NB, 8,8) AS BILL_DATE, A.TR_CD, 
-       CASE WHEN LENGTH(B.DESCRIPTION)>20 THEN SUBSTR(B.DESCRIPTION,1,20) ELSE B.DESCRIPTION END AS TR_NAME,
+       		CASE WHEN LENGTH(B.DESCRIPTION)>20 THEN SUBSTR(B.DESCRIPTION,1,20) ELSE B.DESCRIPTION END AS TR_NAME,
        TO_CHAR(SYSDATE, 'YYYYMMDD') AS PRINT_DATE,
        SUBSTR(A.BILL_NB,1,7) ||'-'|| SUBSTR(A.BILL_NB,8,8) ||'-'|| SUBSTR(A.BILL_NB,16) AS BILL_NB_DASH, 
        SUBSTR(A.BILL_NB,1,7) AS BILL_TR_CD, 
-       CASE WHEN SUBSTR(BILL_NB,1,1)='H' OR SUBSTR(BILL_NB,1,1)='Y' THEN 'Supplier' ELSE 'Location' END TAIL_TITLE       
+       CASE WHEN SUBSTR(BILL_NB,1,1)='H' OR SUBSTR(BILL_NB,1,1)='Y' THEN 'Supplier' ELSE 'Location' END AS TAIL_TITLE       
   FROM BAR_INVHEAD A, SUPPLIERS B 
  WHERE A.TR_CD = B.NAME
     AND A.BILL_NB = '#{bill_nb}'"
@@ -313,59 +313,67 @@ class InvoicesController < ProcedureResourcesController
     
     if(masters && masters.size > 0)
       	master = masters[0]
-      	cmd.gsub!("${BILL_DATE}", master["bill_date"])
-      	cmd.gsub!("${INVOICE_DATE}", master["invoice_date"])
-      	cmd.gsub!("${INVOICE_DATE}", master["invoice_date"])
-      	cmd.gsub!("${INVOICE_DATE}", master["invoice_date"])
-      	cmd.gsub!("${INVOICE_DATE}", master["invoice_date"])
-      	cmd.gsub!("${INVOICE_DATE}", master["invoice_date"])
-    	barcode = "#{bill_nb}|#{master['invoice_no']}|#{master['invoice_date']}|#{master['po_no']}|#{master['bill_date']}|"
-    	debug_print barcode
-      result = {:success => true, :id => bill_nb, :print_command => cmd}
-    else
-      result = {:success => false, :id => bill_nb}
+      	labelPrint.gsub!("${BILL_DATE}", master["bill_date"])
+      	labelPrint.gsub!("${TR_CD}", master["tr_cd"])
+      	labelPrint.gsub!("${TR_NAME}", master["tr_name"])
+      	labelPrint.gsub!("${BILL_NB_DASH}", master["bill_nb_dash"])
+      	labelPrint.gsub!("${BILL_TR_CD}", master["bill_tr_cd"])
+      	labelPrint.gsub!("${TAIL_TITLE}", master["tail_title"])    	
     end
-    # 바코드  : 거래명세서번호(bill_nb), 품목코드(item_cd), 시리얼번호(serial_no), lot_size, 거래명세서날짜
     
     
-    sql = "SELECT A.BILL_NB, A.ITEM_CD, CASE WHEN LENGTH(B.DESCRIPTION)>20 THEN SUBSTR(B.DESCRIPTION,1,20) ELSE B.DESCRIPTION END AS ITEM_NM, A.LOT_QT, A.BILL_QT AS LOT_SIZE, A.PRICE, NVL(B.ROUTING, ' ') ROUTING, NVL(C.NAME, ' ') AS BAR_LOCMAP_ID 
-                 FROM BAR_INVDETAIL A LEFT OUTER JOIN PRODUCTS B ON A.ITEM_CD=B.NAME
-                        LEFT OUTER JOIN BAR_LOCMAPS C ON B.BAR_LOCMAP_ID=C.ID
-               WHERE A.BILL_NB  = '#{bill_nb}'"
-    conn = ActiveRecord::Base.connection()
-    details = conn.select_all(sql)
-    
-	details.each do |detail|
-		
-		barcode << "#{detail['item_sq']}|#{detail['item_cd']}|#{detail['lot_qt']}|#{detail['price']}|"
+     if(masters && masters.size > 0)
+	    # 바코드  : 거래명세서번호(bill_nb), 품목코드(item_cd), 시리얼번호(serial_no), lot_size, 거래명세서날짜
+	    sql = "SELECT A.BILL_NB, A.ITEM_CD, CASE WHEN LENGTH(B.DESCRIPTION)>20 THEN SUBSTR(B.DESCRIPTION,1,20) ELSE B.DESCRIPTION END AS ITEM_NM,
+	        A.LOT_QT, NVL(A.LOT_SIZE, 0) AS LOT_SIZE, A.PRICE, NVL(B.ROUTING, ' ') ROUTING, NVL(C.NAME, ' ') AS BAR_LOCMAP_ID,
+	        (SELECT NVL(MAX(BILL_QTY), 0) + 1 AS SERIAL_NO FROM BAR_INVSERIAL WHERE A.BILL_NB=BILL_NB AND A.ITEM_CD=ITEM_CD) AS SERIAL_NO,
+	        NVL(D.PART_NO, ' ') AS CUS_PART_NO
+	   FROM BAR_INVDETAIL A LEFT OUTER JOIN PRODUCTS B ON A.ITEM_CD=B.NAME
+	                        LEFT OUTER JOIN BAR_LOCMAPS C ON B.BAR_LOCMAP_ID=C.ID
+	                        LEFT OUTER JOIN LABEL_MASTERS D ON SUBSTR(D.PRODUCT_ID, LENGTH(D.DOMAIN_ID)+2) = A.ITEM_CD
+	               WHERE A.BILL_NB  = '#{bill_nb}'"
+	    conn = ActiveRecord::Base.connection()
+	    details = conn.select_all(sql)
+	    
+	    cmds = []
+		details.each do |detail|
+			lot_qt = detail["lot_qt"].to_i
+			serial = detail["serial_no"].to_i
+			
+			lot_size = str_pad(detail["lot_size"], '0', 4, 'L')
+			1.upto(lot_qt).each do |idx|
+				serial_no = (serial + idx -1).to_s
+				serial_no = str_pad(serial_no, '0', 6, 'L')
+				lot_size = str_pad(detail["lot_size"], '0', 6, 'L')
+				
+				cmd = labelPrint
+				cmd.gsub!("${ITEM_CD}", detail["item_cd"]) 
+				cmd.gsub!("${ITEM_NM}", detail["item_nm"]) 
+				cmd.gsub!("${LOT_SIZE}", detail["lot_size"]) 
+				cmd.gsub!("${SERIAL_NO}", serial_no) 
+				cmd.gsub!("${BAR_LOCMAP_ID}", detail["bar_locmap_id"]) 
+				cmd.gsub!("${ROUTING}", detail["routing"]) 
+				cmd.gsub!("${CUS_PART_NO}", detail["cus_part_no"])
+				
+				barcode = "#{master['bill_nb']}|#{detail['item_cd']}|#{serial_no}|#{lot_size}|#{master['bill_date']}"
+				cmd.gsub!("${BARCODE}", barcode)
+				
+				debug_print "lot_qt[#{lot_qt}], idx[#{idx}], serial[#{serial}], serial_no[#{serial_no}]"
+				#debug_print "cmd======>#{cmd}"
+				cmds.push(cmd)
+				
+				debug_print "barcode======>#{barcode}"
+				
+			end
+			
+			debug_print cmds
+		end
+		result = {:success => true, :id => bill_nb, :commands => cmds}
+    else
+     	 result = {:success => false, :id => bill_nb}
 	end
 	
-	
-	
-  	count = 5
-  	cmds = []
-  	
-  	1.upto(5).each do |idx|
-  		cmd = "ddddd"
-  		cmds.push(cmd)
-  	end
-  	
-  	
-	barcode = str_pad(barcode, ' ', 530, 'R')
-	debug_print "[#{barcode.size}][#{barcode}]"
-        
-    if(masters && masters.size > 0)
-      master = masters[0]
-      cmd.gsub!("${INVOICE_DATE}", master["invoice_date"])
-      cmd.gsub!("${INVOICE_NO}", master["invoice_no"])
-      cmd.gsub!("${BILL_NB}", master["bill_nb"])
-      cmd.gsub!("${PO_NO}", master["po_no"])
-      cmd.gsub!("${BARCODE}", barcode)
-      #debug_print cmd
-      result = {:success => true, :id => bill_nb, :commands => cmds}
-    else
-      result = {:success => false, :id => bill_nb}
-    end
+    
     
     respond_to do |format|
       format.xml  { render :xml => result }
