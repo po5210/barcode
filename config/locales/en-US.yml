@@ -2,7 +2,50 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en-US:
-  hello: "Hello world"
+  activerecord:
+    attributes:
+      id: 'ID'
+      x_id: '%{x} ID'
+      domain_id : 'Domain'
+      name: 'name'
+      x_name: '%{x} Name'
+      description: 'Description'
+      x_desc: '%{x} Desc.'
+      creator_id: 'Created By'
+      updater_id: 'Updated By'
+      created_at: 'Created Date'
+      updated_at: 'Last Updated Date'
+      code: 'Code'
+      x_code: '%{x} Code'
+      data: 'Data'
+      x_data: '%{x} Data'
+      value: 'Value'
+      x_value: '%{x} Value'
+      no: 'No.'
+      x_no: '%{x} No.'
+      index: 'Index'
+      seq: 'Seq.'
+      qty: 'Qty.'
+      x_qty: '%{x} Qty.'
+      size: 'Size'
+      x_size: '%{x} Size'
+      time: 'Time'
+      x_time: '%{x} Time'
+      hour: 'Hour'
+      x_hour: '%{x} Hour'
+      min: 'Min.'
+      x_min: '%{x} Min.'
+      sec: 'Sec.'
+      x_sec: '%{x} Sec.'
+      date: 'Date'
+      x_date: '%{x} Date'
+      day: 'Day'
+      x_day: '%{x} Day'
+      status: 'Status'
+      x_status: '%{x} Status'
+      start: 'Start'
+      end: 'End'
+          
   cfinstall_ment: |
     Google Chrome Frame is a free plug-in for Internet Explorer. Some advanced web apps use Google Chrome Frame to provide you with additional features and better performance.
     So, we recommend to <b>install Google Chrome Frame</b> in this IE browsers.</br>
@@ -10,7 +53,23 @@ en-US:
     If Google Chrome Frame is installed well, this page will be refreshed automatically. </p>
   cfinstall_link: Install Google Chrome Frame
   
-  error:
-    unknown_file_type: 'Unknown File Type'
-    entity_not_found: 'Entity not found'
-    empty_not_allowed: 'Empty Data not allowed'
+  errors:
+    messages:
+      blank: '%{attribute} value is blank!'
+      taken: '%{value} already exist!'
+      accepted: '%{attribute} must be accepted'
+      confirmation: '%{attribute} should match confirmation'
+      too_short: '%{attribute} is too short (minimum is %{count} characters)'
+      too_long: '%{attribute} is too long (maximum is %{count} characters)'
+      wrong_length: '%{attribute} is the wrong length (should be %{count} characters)'
+      invalid: 'Value (%{value}) is invalid format'
+      inclusion: 'Value (%{value}) is not allowed'
+      exclusion: 'Value (%{value}) is not allowed'
+      not_a_number: 'Value (%{value}) is not a number'
+      greater_than: 'Value (%{value}) must be greater than %{count}'
+      greater_than_or_equal_to: 'Value (%{value}) must be greater than or equal to %{count}'
+      equal_to: 'Value (%{value}) must be equal to %{count}'
+      less_than: 'Value (%{value}) must be less than %{count}'
+      less_than_or_equal_to: 'Value (%{value}) must be greater than or equal to %{count}'
+      odd: 'Value (%{value}) must be odd'
+      even: 'Value (%{value}) must be even'

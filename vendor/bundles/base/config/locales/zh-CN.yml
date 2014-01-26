@@ -1,0 +1,33 @@
+zh-CN:
+  activerecord:
+    models:
+      shift: 'Shift'
+      role: 'Role'
+      common_code: 'Common Code'
+      terminology: 'Terminology'
+      menu: 'Menu'
+      entity: 'Entity'
+      diy_selection: 'Custom Selection'
+      diy_service: 'Custom Service'
+      file_group: 'File Group'
+    attributes:
+      common_code:
+        parent_id: 'Parent Code'
+    errors:
+      messages:
+        record_invalid : '无效记录'
+    
+  errors:
+    messages:
+      duplicated_code: '(%{code})数据已存在'
+      invalid_x: '%{x}无效'
+      empty_x_not_allowed: '%{x}不能为空'
+      x_already_exist: '%{x}已存在'
+      x_not_exist: '%{x}不存在'
+      x_not_found: '%{x}无法找到'
+      mismatch_with_x: '无法匹配到%{x}'
+      unknown_file_type: '未知文件类型'
+      x_gte_y: '%{x}应大于等于%{y}'
+      x_gt_y: '%{x}应大于%{y}'
+      x_lte_y: '%{x}应小于等于%{y}'
+      x_lt_y: '%{x}应小于%{y}'
