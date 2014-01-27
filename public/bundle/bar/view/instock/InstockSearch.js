@@ -7,7 +7,7 @@ Ext.define('Bar.view.instock.InstockSearch', {
 	items : [
 		{ 
 			name : 'bill_dt', 
-			fieldLabel : T('label.date'), 
+			fieldLabel : T('label.supply_date'), 
 			xtype : 'datefield', 
 			format : T('format.date'), 
 			submitFormat : T('format.submitDate') 

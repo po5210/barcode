@@ -1,5 +1,6 @@
 Hatio::PluggableSpot::add_domain_pluggable do
   # HAS_MANY BEGIN BLOCK DON'T REMOVE
+	has_many :bar_matouts
 	has_many :bar_matmaps
 	has_many :part_groups
 	has_many :product_parts

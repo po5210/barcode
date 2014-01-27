@@ -8,7 +8,7 @@ Ext.define('Bar.view.report.GrBySerSearch', {
 		{ 
 			xtype: 'daterange', 
 			fieldLabel: T('label.date'), 
-			name: 'date' 
+			name: 'wh_dt' 
 		}/*,
 		{ 
 			fieldLabel : T('label.part_no'), 

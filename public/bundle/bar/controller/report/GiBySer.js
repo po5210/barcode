@@ -41,16 +41,16 @@ Ext.define('Bar.controller.report.GiBySer', {
 	beforeParamsChange : function(view, params) {
 		// 검색은 오늘 날짜까지만 가능
 		var searchView = this.getSearchView();
-		searchView.down('datefield[name=date-gte]').setMaxValue(HF.getCurrentShiftDate());
+		searchView.down('datefield[name=whi_dt-gte]').setMaxValue(HF.getCurrentShiftDate());
 
 		if(!params) {
 			params = {};
 		}
-		if(!params['date-gte']) {
-			params['date-gte'] = HF.getCurrentShiftDate();
+		if(!params['whi_dt-gte']) {
+			params['whi_dt-gte'] = HF.getCurrentShiftDate();
 		}
-		if(!params['date-lte']) {
-			params['date-lte'] = HF.getCurrentShiftDate();
+		if(!params['whi_dt-lte']) {
+			params['whi_dt-lte'] = HF.getCurrentShiftDate();
 		}
 		return params;
 	},

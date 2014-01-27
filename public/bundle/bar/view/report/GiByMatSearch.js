@@ -5,7 +5,7 @@ Ext.define('Bar.view.report.BarGiByMatSearch', {
 	xtype : 'bar_gi_by_mat_search',
 	
 	items : [
-		{ xtype: 'daterange', fieldLabel: T('label.date'), name: 'date' },
+		{ xtype: 'daterange', fieldLabel: T('label.date'), name: 'whi_dt' },
 /*		
 		{ 
 			fieldLabel : T('label.part_no'), 
