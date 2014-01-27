@@ -94,7 +94,17 @@ Hatio::Application.routes.draw do
         get :print_detail
         get :update_to_printed
       end
-    end  
+    end
+    
+    resources :instocks do
+      collection do
+        get :instock_info
+        get :instock_detail_info
+        post :update_multiple
+        get :print_master
+        get :print_details
+      end
+    end    
 
 	end
 	
