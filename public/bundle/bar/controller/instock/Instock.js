@@ -38,8 +38,8 @@ Ext.define('Bar.controller.instock.Instock', {
 			},			
 			'bar_instock_list' : {
 				click_new : this.onResetClick,
-				click_temp_save : this.onTempSave,
-				click_save : this.onGridSave
+				click_save : this.onGridSave,
+				after_grid_updated : this.afterGridUpdated
 			},
 			'bar_instock_sublist' : {
 				click_print : this.onPrintLabel
@@ -125,29 +125,84 @@ Ext.define('Bar.controller.instock.Instock', {
 			}
 		}
 		
-		// TODO 서버에 쿼리해서 supplier를 찾아 search form에 넣어줘야 함
-		// TODO grid에 item_nm, lot_size 등을 넣어줘야 함 
+		labelObj = {
+			bill_nb : billNb,
+			invoice_no : invoiceNo,
+			invoice_date : invoiceDate,
+			po_no : poNo,
+			bill_dt : billDt,
+			details : detailList
+		};
 		
-		// search form에 데이터 추가 
-		var searchForm = this.getSearchForm();
-		var formValues = searchForm.getValues();
-		formValues.bill_nb = billNb;
-		formValues.invoice_no = invoiceNo;
-		invoiceDt = Ext.Date.parse(invoiceDate, "Ymd");
-		formValues.invoice_date = Ext.Date.format(invoiceDt, 'Y-m-d');
-		formValues.po_no = poNo;
-		searchForm.setValues(formValues);
+		Ext.Ajax.request({
+			url : '/domains/' + login.current_domain_id + '/instocks/instock_info.json',
+			method : 'GET',
+			params : { label_info : Ext.JSON.encode(labelObj) },
+			success : function(response) {
+				var result = Ext.JSON.decode(response.responseText);
+				// search form에 데이터 추가 - tr_cd, tr_nm
+				var searchForm = this.getSearchForm();
+				var formValues = searchForm.getValues();
+				formValues.bill_nb = billNb;
+				formValues.invoice_no = invoiceNo;
+				invoiceDt = Ext.Date.parse(invoiceDate, "Ymd");
+				formValues.invoice_date = Ext.Date.format(invoiceDt, 'Y-m-d');
+				formValues.po_no = poNo;
+				formValues.tr_cd = result.master.tr_cd;
+				searchForm.setValues(formValues);
 		
-		// grid에 데이터 추가 
-		var gridView = this.getGridView();
-		gridView.store.loadRawData(detailList);
+				// grid에 데이터 추가 - item_nm, lot_size, box_qty, ....
+				var gridView = this.getGridView();
+				gridView.store.loadRawData(result.master.details);				
+			},
+			scope : this
+		});
 	},
 	
 	/**
 	 * Detail Label scan시 
 	 */	
 	scanDetail : function(barcode) {
-		alert(barcode);
+		var barcodeArr = barcode.split('|');
+		var barcodeArrLen = barcodeArr.length;
+		var itemSq = barcodeArr[0];
+		var itemCd = barcodeArr[1];
+		var billQt = barcodeArr[2];
+		var unitPrice = barcodeArr[3];
+		
+		var searchForm = this.getSearchForm();
+		var formValues = searchForm.getValues();
+		var billNb = formValues.bill_nb;
+		var itemBaselocCd = null;
+		var itemLocCd = null;
+		
+		Ext.Ajax.request({
+			url : '/domains/' + login.current_domain_id + '/instocks/instock_detail_info.json',
+			method : 'GET',
+			params : { bill_nb : billNb, item_cd : itemCd, scan_qty : billQt },
+			success : function(response) {
+				var result = Ext.JSON.decode(response.responseText);
+				console.log(result);
+				var subGridView = this.getSubGridView();
+				var grDetail = result.detail;
+				grDetail.barcode_str = barcode;
+				// 위 쪽 그리드에서 입력한 baseloc_cd, loc_cd 정보를 가져온다.
+				var gridView = this.getGridView();
+				
+				gridView.store.each(function(record) {
+					if(record.data.item_cd == itemCd) {
+						grDetail.baseloc_cd = record.data.baseloc_cd;
+						grDetail.loc_cd = record.data.loc_cd;
+						var oldRealQty = record.get('real_qt');
+						var realQty = parseInt(oldRealQty) + parseInt(billQt);
+						record.set('real_qt', realQty);
+					}
+				});
+				
+				subGridView.store.add(grDetail);				
+			},
+			scope : this
+		});		
 	},
 	
 	/**
@@ -225,6 +280,43 @@ Ext.define('Bar.controller.instock.Instock', {
 		var subGridView = this.getSubGridView();
 		subGridView.store.removeAll();
 	},
+	
+	/**
+	 * override
+	 */
+	onGridSave : function(view) {
+		HF.msg.confirm({
+			msg : T('text.Sure to Save'),
+			fn : function(confirmBtn) {
+				if(confirmBtn == 'yes') {
+					var searchForm = this.getSearchForm();
+					var master = searchForm.getValues();
+					var details = [];
+					view.store.each(function(record) {
+						var detail = record.data;
+						details.push(detail);
+					});
+					
+					if(details.length > 0) {
+						master.details = details;
+						var url = this.getMultipleUpdateUrl(view);
+						console.log(master)
+					    Ext.Ajax.request({
+						    url : url,
+						    method : 'POST',
+						    params : { multiple_data : Ext.JSON.encode(master) },
+						    success : function(response) {
+								view.fireEvent('after_grid_updated', view, 'c', response);
+							}
+						});
+					} else {
+						HF.msg.notice(T('text.Nothing changed'));
+					}				
+				}
+			},
+			scope : this
+		});
+	},	
 			
 	/****************************************************************
 	 ** 			여기서 부터는 abstract method, 필수 구현 				   **
