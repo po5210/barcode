@@ -15,19 +15,19 @@ zh-CN:
         parent_id: 'Parent Code'
     errors:
       messages:
-        record_invalid : '无效记录'
+        record_invalid : 'Invalid Record'
     
   errors:
     messages:
-      duplicated_code: '(%{code})数据已存在'
-      invalid_x: '%{x}无效'
-      empty_x_not_allowed: '%{x}不能为空'
-      x_already_exist: '%{x}已存在'
-      x_not_exist: '%{x}不存在'
-      x_not_found: '%{x}无法找到'
-      mismatch_with_x: '无法匹配到%{x}'
-      unknown_file_type: '未知文件类型'
-      x_gte_y: '%{x}应大于等于%{y}'
-      x_gt_y: '%{x}应大于%{y}'
-      x_lte_y: '%{x}应小于等于%{y}'
-      x_lt_y: '%{x}应小于%{y}'
+      duplicated_code: 'The code (%{code}) to create is already exist!'
+      invalid_x: 'Invalid %{x}'
+      empty_x_not_allowed: 'Empty %{x} not allowed'
+      x_already_exist: '%{x} is already exist!'
+      x_not_exist: '%{x} is not exist!'
+      x_not_found: '%{x} not found!'
+      mismatch_with_x: 'Mismatch with %{x}'
+      unknown_file_type: 'Unknown File Type'
+      x_gte_y: '%{x} must be greater than or equal to %{y}'
+      x_gt_y: '%{x} must be greater than %{y}'
+      x_lte_y: '%{x} must be less than or equal to %{y}'
+      x_lt_y: '%{x} must be less than %{y}'
