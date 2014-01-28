@@ -37,12 +37,11 @@ Ext.define('Bar.controller.instock.Instock', {
 				keydown : this.detailTextKeyDown
 			},			
 			'bar_instock_list' : {
-				click_new : this.onResetClick,
-				click_save : this.onGridSave,
 				after_grid_updated : this.afterGridUpdated
 			},
 			'bar_instock_sublist' : {
-				click_print : this.onPrintLabel
+				click_new : this.onResetClick,
+				click_save : this.onGridSave
 			},
 			'bar_instock_search' : {
 				click_search : this.onSearchClick,
@@ -204,28 +203,6 @@ Ext.define('Bar.controller.instock.Instock', {
 			scope : this
 		});		
 	},
-	
-	/**
-	 * Print 버튼 클릭시
-	 */
-	onPrintLabel : function(view) {
-		var billNb = this.getSearchForm().getValues().bill_nb;
-		
-		if(billNb) {
-			// print command 정보를 서버에서 가져온다.
-			Ext.Ajax.request({
-				url : '/domains/' + login.current_domain_id + '/instocks/' + billNb + '/print.json',
-				method : 'GET',
-				success : function(response) {
-					var result = Ext.JSON.decode(response.responseText);
-					this.printLabel(billNb, result.print_command);
-				},
-				scope : this
-			});
-		} else {
-			HF.msg.notice(T('text.Empty data exist') + " : " + T('label.bill_nb'));
-		}
-	},	
 
 	/****************************************************************
 	 ** 			여기는 customizing area 						   **

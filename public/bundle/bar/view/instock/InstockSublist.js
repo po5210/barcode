@@ -35,6 +35,6 @@ Ext.define('Bar.view.instock.InstockSublist', {
 	
 	dockedItems: [ {
 		xtype: 'controlbar',
-		items : ['->', 'print']
+		items : ['->', 'new', 'save']
 	} ]
 });

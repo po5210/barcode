@@ -38,7 +38,7 @@ group :assets do
 end
 
 gem 'jquery-rails'
-gem "devise", "<= 2.2.8"
+gem "devise", "2.1.2"
 gem "uuidtools", "~> 2.1.3"
 gem 'inherited_resources'
 gem 'thor'
