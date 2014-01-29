@@ -36,7 +36,7 @@ Ext.define('Bar.controller.invoice.Invoice', {
 				click_new : this.onResetClick,
 				click_save : this.onFormSave,
 				click_delete : this.onGridDelete,
-				click_input : this.onInput,
+				click_apply_invoice : this.onInput,
 				after_grid_updated : this.afterGridUpdated
 			},
 			'bar_invoice_search' : {
@@ -265,6 +265,9 @@ Ext.define('Bar.controller.invoice.Invoice', {
 		billDateField.setValue(HF.getCurrentShiftDate());
 		var poNoField = searchView.down(' textfield[name=po_no]');
 		poNoField.setValue('GQBA-PL-');		
+		
+		var gridView = this.getGridView();
+		gridView.store.removeAll();
 	},
 	
 	/**
@@ -375,7 +378,7 @@ Ext.define('Bar.controller.invoice.Invoice', {
 	},
 	
 	/**
-	 * input button click 전 validation
+	 * apply_invoice button click 전 validation
 	 */
 	validateInputLogic : function(form) {
 		var formValues = form.getValues();

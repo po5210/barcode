@@ -6,8 +6,8 @@ Ext.define('Bar.view.instock.InstockSearch', {
 		
 	items : [
 		{ 
-			name : 'bill_dt', 
-			fieldLabel : T('label.supply_date'), 
+			name : 'in_dt', 
+			fieldLabel : T('label.in_date'), 
 			xtype : 'datefield', 
 			format : T('format.date'), 
 			submitFormat : T('format.submitDate') 
@@ -38,7 +38,12 @@ Ext.define('Bar.view.instock.InstockSearch', {
 			fieldLabel : T('label.po_no'), 
 			name : 'po_no', 
 			xtype : 'textfield'
-		}		
+		},
+		{ 
+			fieldLabel : T('label.bill_date'), 
+			name : 'bill_dt', 
+			xtype : 'textfield'
+		},		
 	]
 	
 });

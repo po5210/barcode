@@ -6,6 +6,6 @@ Ext.define('Bar.view.invoice.InvoiceForm', {
 
 	dockedItems : [ {
 		xtype : 'controlbar',
-		items : ['->', 'input', 'new', 'save', 'delete']
+		items : ['->', 'apply_invoice', 'new', 'save', 'delete']
 	} ]
 });

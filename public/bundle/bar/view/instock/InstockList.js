@@ -8,8 +8,9 @@ Ext.define('Bar.view.instock.InstockList', {
 	
 	store : Ext.create('Ext.data.Store', {
 		fields : [
+			{ name : 'bill_seq', type : 'string' },
 			{ name : 'bill_nb', type : 'string' },
-			{ name : 'item_cd', type : 'auto' },
+			{ name : 'item_cd', type : 'string' },
 			{ name : 'item_nm', type : 'string' },
 			{ name : 'baseloc_cd', type : 'string' },
 			{ name : 'loc_cd', type : 'string' },
@@ -32,15 +33,13 @@ Ext.define('Bar.view.instock.InstockList', {
 			header : T('label.baseloc_cd'), 
 			dataIndex : 'baseloc_cd', 
 			width : 100,
-			editor : { xtype : 'textfield' }
-			//editor : { xtype: 'entitycolumneditor', storeClass: 'Bar.store.BarLocmap' }			
+			editor : {xtype : 'entityfield', storeClass : 'Bar.store.BarLocgrp'}			
 		},
 		{ 
 			header : T('label.loc_cd'), 
 			dataIndex : 'loc_cd', 
 			width : 100,
-			editor : { xtype : 'textfield' }
-			//editor : { xtype: 'entitycolumneditor', storeClass: 'Bar.store.Baseloc' }			
+			editor : { xtype : 'entityfield', storeClass : 'Bar.store.BarLocmap'  }			
 		},
 		{ header : T('label.lot_size'), dataIndex : 'lot_size', xtype : 'numbercolumn', format : T('format.number'), align : 'right', width : 85 },
 		{ header : T('label.box_qty'), dataIndex : 'box_qty', xtype : 'numbercolumn', format : T('format.number'), align : 'right', width : 85 },

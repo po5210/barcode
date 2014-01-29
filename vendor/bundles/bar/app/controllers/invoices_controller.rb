@@ -339,12 +339,15 @@ class InvoicesController < ProcedureResourcesController
 		details.each do |detail|
 			lot_qt = detail["lot_qt"].to_i
 			serial = detail["serial_no"].to_i
-			
+		    item_cd = ""
 			lot_size = str_pad(detail["lot_size"], '0', 4, 'L')
+			serial_no = ""
+			
 			1.upto(lot_qt).each do |idx|
 				serial_no = (serial + idx -1).to_s
 				serial_no = str_pad(serial_no, '0', 6, 'L')
 				lot_size = str_pad(detail["lot_size"], '0', 6, 'L')
+				item_cd =  detail["item_cd"]
 				
 				cmd = labelPrint
 				cmd.gsub!("${ITEM_CD}", detail["item_cd"]) 
@@ -365,6 +368,8 @@ class InvoicesController < ProcedureResourcesController
 				debug_print "barcode======>#{barcode}"
 				
 			end
+			
+			update_to_serial(bill_nb, item_cd, serial_no)
 			
 			debug_print cmds
 		end
@@ -389,6 +394,7 @@ class InvoicesController < ProcedureResourcesController
     begin
       conn = ActiveRecord::Base.connection()
       conn.execute("UPDATE BAR_INVHEAD SET PRN_YN = '1' WHERE BILL_NB = '#{bill_nb}'")
+      
     rescue Exception => e
       raise Hatio::Exception::InvalidRequest, "ERROR : #{e.to_s}"
     end
@@ -401,7 +407,33 @@ class InvoicesController < ProcedureResourcesController
   
   	  
   
+  
   private 
+  		# BAR_INVSERIAL WHERE A.BILL_NB=BILL_NB AND A.ITEM_CD=ITEM_CD
+	  def update_to_serial(bill_nb, item_cd, serial_no)
+	    
+	    conn = ActiveRecord::Base.connection()
+	    serial_sql = "UPDATE BAR_INVSERIAL SET BILL_QTY = '#{serial_no}' WHERE BILL_NB = '#{bill_nb}' AND  ITEM_CD = '#{item_cd}'"
+	    detail_sql = "UPDATE BAR_INVDETAIL SET SERIAL_NO ='#{serial_no}' WHERE BILL_NB = '#{bill_nb}' AND  ITEM_CD = '#{item_cd}'"
+	    ActiveRecord::Base.transaction do
+	      	 begin
+		          conn.execute(serial_sql)
+		        rescue Exception => e
+		          raise Hatio::Exception::InvalidRequest, "ERROR : #{e.to_s}"
+		        end
+		      
+	      	
+	      		begin
+		          conn.execute(detail_sql)
+		        rescue Exception => e
+		          raise Hatio::Exception::InvalidRequest, "ERROR : #{e.to_s}"
+		        end
+		      
+	      end
+	      
+	  end
+  
+  
   		
   	  #
 	  # SERIAL_NO 신규 번호 가져오기
