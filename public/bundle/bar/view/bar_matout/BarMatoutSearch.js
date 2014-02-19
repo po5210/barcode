@@ -5,9 +5,29 @@ Ext.define('Bar.view.bar_matout.BarMatoutSearch', {
 	xtype : 'bar_bar_matout_search',
 		
 	items : [
-		{ fieldLabel : T('label.who_dt'), name : 'who_dt-like' },
-		{ fieldLabel : T('title.bar_locgrp'), name : 'bar_locgrp.name-eq', xtype : 'entitysearchcombo', storeClass : 'Bar.store.BarLocgrp', valueField : 'name' },
-		{ fieldLabel : T('label.name'), name : 'name-like' },
+		{ 
+			name : 'who_dt' , 
+			fieldLabel : T('label.who_dt'), 		   
+		   xtype : 'datefield', 
+		   format : T('format.date'), 
+		   submitFormat : T('format.submitDate') 
+		},
+		{ 
+			fieldLabel : T('title.bar_locmap'), 
+			name : 'bar_locmap.name-eq', 
+			xtype : 'entitysearchcombo', 
+			storeClass : 'Bar.store.BarLocmap', 
+			valueField : 'name', 
+			associationField : [ 
+				'bar_locgrp.name-eq',
+				{
+					name : 'prod_line_fg-in',
+					value : function() {
+						return "3,4";
+					}
+				}
+			] 
+		}
 	]
 	
 });

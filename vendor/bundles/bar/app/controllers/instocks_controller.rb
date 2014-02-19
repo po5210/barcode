@@ -28,12 +28,12 @@ class InstocksController < ProcedureResourcesController
         WHERE 
           I.TR_CD = S.NAME AND
           I.BILL_NB = '#{bill_nb}'"
+      master = conn.select_all(master_sql)
           
       detail_sql = "SELECT I.*, P.BOX_QTY, P.DESCRIPTION ITEM_NM, P.BAR_LOCGRP_ID, P.BAR_LOCMAP_ID 
       						FROM BAR_INVDETAIL I, PRODUCTS P 
       					  WHERE I.BILL_NB = '#{bill_nb}' AND I.ITEM_CD = P.NAME"
       #detail_sql = "SELECT BOX_QTY, DESCRIPTION ITEM_NM FROM PRODUCTS  WHERE ITEM_CD = {}"
-      master = conn.select_all(master_sql)
       details = conn.select_all(detail_sql)
       
       if(master && master.size > 0)
@@ -64,7 +64,7 @@ class InstocksController < ProcedureResourcesController
       raise Hatio::Exception::InvalidRequest, "ERROR : #{e.to_s}"
     end
     
-    raise Hatio::Exception::InvalidRequest, "Invalid bill number [#{bill_nb}]" unless result
+    #raise Hatio::Exception::InvalidRequest, "Invalid bill number [#{bill_nb}]" unless result
     
     respond_to do |format|
       format.xml  { render :xml => result }
@@ -101,11 +101,11 @@ class InstocksController < ProcedureResourcesController
         detail = details[0]
         
         #debug_print detail.inspect
-        if(detail["item_serial"]== item_serial && detail["scan_qty"].to_s==scan_qty.to_s)
+       # if(detail["item_serial"]== item_serial && detail["scan_qty"].to_s==scan_qty.to_s)
         	result = { :detail => detail, :success => true }
-        else
-       		result = {  :msg => "Invalid Label Info", :success => false }
-       	end
+       # else
+       	#	result = {  :msg => "Invalid Label Info", :success => false }
+       	#end
         
         
       else
@@ -143,79 +143,76 @@ class InstocksController < ProcedureResourcesController
     masters = instock_Info["masters"]
     details = instock_Info["details"]
    
-    conn = ActiveRecord::Base.connection()
+    #conn = ActiveRecord::Base.connection()
     today = Date.today.strftime('%Y%m%d')
     
-    #debug_print "instock_info => #{instock_info.inspect}"
-    #debug_print "masters => #{masters.inspect}"
+    debug_print "instock_info => #{instock_info.inspect}"
+    debug_print "masters => #{masters.inspect}"
     
-    ActiveRecord::Base.transaction do
-      masters.each do |master|
-        in_dt = parse_date(instock_Info["in_dt"]).strftime('%Y%m%d')
-        invoice_date = parse_date(instock_Info["invoice_date"]).strftime('%Y%m%d')
-        
-        
-        master_sql = "INSERT INTO BAR_GRHEAD (
-            	BILL_NB, 			TR_CD, 			BILL_DT, 				BASELOC_CD, 	
-            	LOC_CD, 			ITEM_CD, 			ARRIVAL_QTY,		INVOICE_NO, 	
-            	PO_NO, 			BILL_SEQ,		IN_DT, 					PRICE, 
-            	UNIT_PRICE, 	SCAN_QTY,		INVOICE_DATE, 	REG_ID, 	REG_DTM
-          ) VALUES (
-         	 #{conn.quote(instock_Info["bill_nb"])}
-            ,#{conn.quote(instock_Info["tr_cd"])} 
-            ,#{conn.quote(instock_Info["bill_dt"])}
-            ,#{conn.quote(master["baseloc_cd"])}
-            ,#{conn.quote(master["loc_cd"])}
-            ,#{conn.quote(master["item_cd"])} 
-            ,#{master["bill_qt"]}
-            ,#{conn.quote(instock_Info["invoice_no"])} 
-            ,#{conn.quote(instock_Info["po_no"])} 
-            ,#{conn.quote(master["bill_seq"])}
-            ,#{conn.quote(in_dt)}
-            ,#{master["unit_price"] * master["bill_qt"]}
-            ,#{master["unit_price"]}
-            ,#{master["real_qt"]}
-            ,'#{invoice_date}'
-            ,#{conn.quote(current_user.id)}
-            ,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS'))"
-            
-        #debug_print master_sql
-        
-        begin
-          conn.execute(master_sql)
-        rescue Exception => e
-          raise Hatio::Exception::InvalidRequest, "ERROR : #{e.to_s}"
-        end
-      end
+    #ActiveRecord::Base.transaction do
       
-      
-      debug_print details.inspect
+      #debug_print details.inspect
       details.each do |detail|
         #bill_dt = parse_date(gr_master["invoice_date"]).strftime('%Y%m%d')
         #invoice_date = parse_date(gr_master["invoice_date"]).strftime('%Y%m%d')
                 
-        detail_sql = "INSERT INTO BAR_GRDETAIL (
-        			BILL_NB, 		ITEM_CD, 				ITEM_SERIAL, 	SCAN_QTY, 
-        			REAL_QTY, 	BARCODE_STR, 	REG_ID, 			REG_DTM
-        ) VALUES (
-            #{conn.quote(instock_Info["bill_nb"])}, 
-            #{conn.quote(detail["item_cd"])}, 
-            #{conn.quote(detail["item_serial"])}, 
-            #{detail["scan_qty"]}, 
-            #{detail["real_qty"]}, 
-            #{conn.quote(detail["barcode_str"])}, 
-            #{conn.quote(current_user.id)},
-            TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS'))"
-            
-        debug_print "BAR_GRDETAIL => #{detail_sql}"
-          
         begin
-          conn.execute(detail_sql)
-        rescue Exception => e
-          raise Hatio::Exception::InvalidRequest, "ERROR : #{e.to_s}"
-        end
-      end
-    end
+	      plsql = get_plsql
+	      r_bill_nb = plsql.SP_BAR_CTRL_BAR_GRDETAIL(
+	        :arg_language     => 'en',
+	        :arg_dateformat   => 'YYYY-MM-DD',
+	        :arg_gubun   	=> 'I20',
+	        :p_bill_nb        	=> instock_Info["bill_nb"],
+	        :p_item_cd 		=> detail["item_cd"],
+	        :p_item_sr          	=> detail["item_serial"],
+	        :p_scan_qt        	=> detail["scan_qty"],
+	        :p_real_qt         	=> detail["real_qty"],
+	        :p_barcode_str       => detail["barcode_str"],
+	        :rtn_cursor => rtn_cursor,
+	      )[:rtn_cursor]
+	      
+		    rescue Exception => e
+		      raise Hatio::Exception::InvalidRequest, "ERROR : #{e.to_s}"
+			end
+	  	end 
+        
+      
+      masters.each do |master|
+        in_dt = parse_date(instock_Info["in_dt"]).strftime('%Y%m%d')
+        invoice_date = parse_date(instock_Info["invoice_date"]).strftime('%Y%m%d')
+        price = master["unit_price"] * master["bill_qt"]
+        
+        begin
+	      plsql = get_plsql
+	      r_bill_nb = plsql.SP_BAR_CTRL_BAR_GRHEAD(
+	        :arg_language     => 'en',
+	        :arg_dateformat   => 'YYYY-MM-DD',
+	        :arg_gubun   		=> 'I20',
+	        :arg_bill_nb        		=> instock_Info["bill_nb"],
+	        :arg_item_cd 			=> master["item_cd"],
+	        :arg_baseloc_cd		=> master["baseloc_cd"],
+	        :arg_loc_cd				=> master["loc_cd"],
+	        :arg_invoice_no       	=> instock_Info["invoice_no"],
+	        :arg_po_no       		=> instock_Info["po_no"],
+	        :arg_bill_seq       		=> master["bill_seq"],
+	        :arg_in_dt       			=> in_dt,
+	        :arg_price       			=> price,
+	        :arg_unit_price       	=> master["unit_price"],
+	        :arg_lot_no       		=> instock_Info["bill_dt"],
+	        :arg_tr_cd       			=> instock_Info["tr_cd"],
+	        :arg_scan_qty        	=> master["real_qt"],
+	        :arg_bill_dt         		=> instock_Info["bill_dt"],
+	        :arg_arrival_qty       	=> master["bill_qt"],
+	        :arg_user_id       	=> current_user.id,
+	        :arg_invoice_date       	=> invoice_date,
+	        :rtn_cursor 			=> rtn_cursor,
+	      )[:rtn_cursor]
+	      
+		    rescue Exception => e
+		      raise Hatio::Exception::InvalidRequest, "ERROR : #{e.to_s}"
+			end
+	  	end
+        
     
     respond_to do |format|
       format.xml  { render :xml => {:success => true, :msg => :Success} }

@@ -15,7 +15,7 @@ Ext.define('Bar.controller.invoice.Invoice', {
 			
 	stores: ['Bar.store.Invoice'],
 	
-	views : ['Bar.view.invoice.Invoice'],
+	views : ['Bar.view.invoice.Invoice', 'Bar.view.invoice.InvoiceReprint'],
 	
 	refs: [ { ref : 'Invoice', selector : 'bar_invoice' } ],
 	
@@ -48,7 +48,7 @@ Ext.define('Bar.controller.invoice.Invoice', {
 	},
 
 	/****************************************************************
-	 ** 			여기는 label print 						   		**
+	 ** 			여기는 Invoice print 						   		**
 	 ****************************************************************/	
 	/**
 	 * Invoice 버튼 클릭시
@@ -150,7 +150,21 @@ Ext.define('Bar.controller.invoice.Invoice', {
 	/**
 	 * Reprint 버튼 클릭시
 	 */	
-	onReprintInvDetail : function(view) {
+	onReprintInvDetail : function(btn) {
+//		var view = this.getMainView();
+//		var selectionModel = view.child('grid').getSelectionModel();
+//		var orders = selectionModel.getSelection();
+		
+		var gridView = this.getGridView();
+		var selections = gridView.getSelectionModel().getSelection();
+		if(selections.length > 0) {
+			console.log(selections[0]);
+			HF.popup('Bar.view.invoice.InvoiceReprint', selections[0], {});
+		} else {
+			HF.msg.notice(T('text.Nothing selected'));
+		}
+		
+		
 		
 	},
 

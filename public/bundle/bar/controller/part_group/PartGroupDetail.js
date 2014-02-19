@@ -41,7 +41,20 @@ Ext.define('Bar.controller.part_group.PartGroupDetail', {
 	/****************************************************************
 	 ** 					Override 구현 						   **
 	 ****************************************************************/
-	
+		/**
+	 * 추가적으로 필요한 validation을 수행 
+	 */
+	validateLogic : function(form) {
+		var formValues = form.getValues();
+		
+		var code = formValues.name;
+		var name = formValues.description;
+		
+		formValues.name = code.toUpperCase();
+		formValues.description = name.toUpperCase();
+		form.setValues(formValues);
+		return true;
+	},
 	/****************************************************************
 	 ** 					abstract method, 필수 구현 				   **
 	 ****************************************************************/

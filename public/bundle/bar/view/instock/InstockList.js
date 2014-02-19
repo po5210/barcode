@@ -18,6 +18,7 @@ Ext.define('Bar.view.instock.InstockList', {
 			{ name : 'box_qty', type : 'integer' },
 			{ name : 'bill_qt', type : 'integer' },
 			{ name : 'real_qt', type : 'integer' },
+			{ name : 'price', type : 'float' },
 			{ name : 'unit_price', type : 'float' },
 			{ name : '_cud_flag_', type : 'string' }
 		]

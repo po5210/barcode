@@ -193,7 +193,7 @@ class InvoicesController < ProcedureResourcesController
     cmd = 
 "^XA~TA000~JSN^LT0^MMT^MNW^MTT^PON^PMN^LH0,0^JMA^PR4,4^MD0^JUS^LRN^CI0^XZ
 ^XA
-^FT516,57^A0R,62,55^FH\^FDHalla Visteon Climate Control(Thailand)Co.,Ltd.^FS
+^FT516,57^A0R,62,55^FH\^FDHalla Visteon Climate Control(Beijing)Co.,Ltd.^FS
 ^FT186,61^A0R,52,36^FH\^FDInvoice Date :^FS
 ^FT186,285^A0R,42,31^FH\^FD${INVOICE_DATE}^FS
 ^FT277,88^A0R,42,36^FH\^FDInvoice No :^FS
@@ -212,7 +212,7 @@ class InvoicesController < ProcedureResourcesController
     
     if(masters && masters.size > 0)
       	master = masters[0]
-    	barcode = "#{bill_nb}|#{master['invoice_no']}|#{master['invoice_date']}|#{master['po_no']}|#{master['bill_date']}|"
+    	barcode = "#{bill_nb}|#{master['invoice_no']}|#{master['invoice_date']}|#{master['po_no']}|#{master['bill_date']}"
     	debug_print barcode
     end
     
@@ -222,7 +222,7 @@ class InvoicesController < ProcedureResourcesController
     details = conn.select_all(sql)
     
 	details.each do |detail|
-		barcode << "#{detail['item_sq']}|#{detail['item_cd']}|#{detail['lot_qt']}|#{detail['price']}|"
+		barcode << "|#{detail['item_sq']}|#{detail['item_cd']}|#{detail['lot_qt']}|#{detail['price']}"
 	end
 	
 	barcode = str_pad(barcode, ' ', 530, 'R')
@@ -365,13 +365,13 @@ class InvoicesController < ProcedureResourcesController
 				#debug_print "cmd======>#{cmd}"
 				cmds.push(cmd)
 				
-				debug_print "barcode======>#{barcode}"
+				#debug_print "barcode======>#{barcode}"
 				
 			end
 			
 			update_to_serial(bill_nb, item_cd, serial_no)
 			
-			debug_print cmds
+			#debug_print cmds
 		end
 		result = {:success => true, :id => bill_nb, :commands => cmds}
     else

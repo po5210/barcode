@@ -281,8 +281,9 @@ Ext.define('Bar.controller.instock.Instock', {
 		gridView.store.removeAll();
 		var subGridView = this.getSubGridView();
 		subGridView.store.removeAll();
-		
-		this.getMainView().child(' #scan_master').focus();
+		var scanMaster = this.getMainView().child(' #scan_master');
+		scanMaster.enable();
+		scanMaster.focus();
 	},
 	
 	/**
@@ -297,12 +298,28 @@ Ext.define('Bar.controller.instock.Instock', {
 					var instockInfo = searchForm.getValues();
 					var masters = [];
 					var details = [];
+					var isValid = true;
 										
 					var gridView = this.getGridView();
 					gridView.store.each(function(record) {
 						var master = record.data;
+						
+						console.log(master);
+						//alert("master.bill_qty["+ master.bill_qty.value +"]");
+						//alert("master.bill_qty["+ master.bill_qty +"]master.real_qty["+ master.real_qty +"]");
+						if(master.bill_qt != master.real_qt) {							
+							isValid = false;
+							return;
+						} 
 						masters.push(master);
 					});
+					
+					if(!isValid) {
+						HF.msg.notice(T('text.Error'));
+						return;
+					}
+					
+					return false;
 
 					view.store.each(function(record) {
 						var detail = record.data;
@@ -323,7 +340,7 @@ Ext.define('Bar.controller.instock.Instock', {
 								//view.fireEvent('after_grid_updated', view, 'c', response);
 								HF.msg.success(T('text.Success to Save'));
 								//this.onResetClick();
-								 this.onResetClick(view);
+//								 this.onResetClick(view);
 							}
 						});
 					} else {
